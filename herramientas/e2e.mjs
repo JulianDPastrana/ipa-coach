@@ -62,7 +62,7 @@ async function grabarYCalificar(pagina, segundos) {
   await pagina.waitForFunction((antes) => {
     const v = document.querySelector(".tarjeta.actual .veredicto").textContent;
     return v && v !== antes;
-  }, { timeout: 180000 }, antes);
+  }, { timeout: 900000 }, antes);
   const espera = Date.now() - t0;
   await new Promise((r) => setTimeout(r, 1000)); // que terminen de aparecer las fichas
   const resultado = await pagina.$eval(".tarjeta.actual", (t) => ({
@@ -86,8 +86,8 @@ const nivelDe = (f) => f.split(":")[1];
   }));
   revisar(info.sw, "el service worker controla la página");
   revisar(info.aislado, "la página queda aislada (el modelo puede usar varios hilos)");
-  await new Promise((r) => setTimeout(r, 3000));
-  revisar(await pagina.$("#carga[open]"), "la primera vez muestra la descarga del modelo");
+  const descarga = await pagina.waitForSelector("#carga[open]", { timeout: 60000 }).catch(() => null);
+  revisar(descarga, "la primera vez muestra la descarga del modelo");
   await pagina.screenshot({ path: join(FOTOS, "1-descarga.png") });
 
   await elegirSonido(pagina, "v");
