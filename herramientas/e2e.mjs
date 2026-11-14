@@ -49,6 +49,20 @@ async function elegirSonido(pagina, ipa) {
   await pagina.waitForSelector(`#sonidos .fila[data-ipa="${ipa}"]`, { visible: true });
   await pagina.click(`#sonidos .fila[data-ipa="${ipa}"]`);
   await pagina.waitForFunction((ipa) => document.querySelector("#glifo").textContent === ipa, {}, ipa);
+  // Un sonido nuevo abre su tutorial: corte de la boca animado y los tres pasos.
+  const tutorial = await pagina.waitForSelector("#hoja-como[open]", { timeout: 5000 }).catch(() => null);
+  if (tutorial) {
+    await new Promise((r) => setTimeout(r, 2500));
+    const t = await pagina.evaluate(() => ({
+      lengua: document.querySelector("#como-boca .lengua").getAttribute("d")?.length ?? 0,
+      pasos: document.querySelectorAll("#como-pasos li").length,
+      aire: document.querySelector("#como-boca .aire").getAttribute("d")?.length ?? 0,
+    }));
+    revisar(t.lengua > 50 && t.pasos === 3 && t.aire > 20, `tutorial de /${ipa}/ con diagrama, aire y 3 pasos`);
+    await pagina.screenshot({ path: join(FOTOS, `tutorial-${ipa}.png`) });
+    await pagina.click("#hoja-como .primario");
+  }
+  revisar(tutorial, `un sonido nuevo (/${ipa}/) abre su tutorial`);
   await new Promise((r) => setTimeout(r, 400));
 }
 

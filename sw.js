@@ -1,8 +1,8 @@
 // Guarda la app para usarla sin internet. El modelo lo guarda el worker (js/oido.js) en su propia caché.
-const VERSION = "app-1";
+const VERSION = "app-2";
 const APP = [
   "./", "index.html", "estilo.css", "manifest.webmanifest",
-  "js/app.js", "js/audio.js", "js/fonetica.js", "js/fonetica-tokens.js", "js/oido.js", "js/progreso.js", "js/puntaje.js", "js/voz.js",
+  "js/app.js", "js/audio.js", "js/boca.js", "js/tutoriales.js", "js/fonetica.js", "js/fonetica-tokens.js", "js/oido.js", "js/progreso.js", "js/puntaje.js", "js/voz.js",
   "datos/lecciones.json", "modelo/info.json", "modelo/vocab.json",
   "vendor/ort/ort.wasm.min.mjs", "vendor/ort/ort-wasm-simd-threaded.mjs", "vendor/ort/ort-wasm-simd-threaded.wasm",
   "vendor/espeak/espeak-ng.js", "vendor/espeak/espeak-ng.data",

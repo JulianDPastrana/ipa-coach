@@ -2,6 +2,8 @@ import { Grabadora, pico } from "./audio.js";
 import { ipa } from "./fonetica.js";
 import { aciertoPorSonido, calendario, guardar, intentos, racha } from "./progreso.js";
 import { BIEN, CASI } from "./puntaje.js";
+import { crearBoca, pasos, postura } from "./boca.js";
+import { tutorial } from "./tutoriales.js";
 import { decir, hayVoz } from "./voz.js";
 
 const $ = (s) => document.querySelector(s);
@@ -71,7 +73,8 @@ oido.onmessage = ({ data }) => {
 
 /* ---------- Modo foco ---------- */
 
-function cargarLeccion(lec, eleccion) {
+// mostrar: abre el tutorial si el sonido es nuevo (solo cuando lo elige la persona, no al abrir la app).
+function cargarLeccion(lec, eleccion, mostrar) {
   est.leccion = lec;
   est.tarjetas = [
     ...lec.palabras.map((p) => ({ texto: p, fonemas: IPA[est.lang][p] })),
@@ -85,6 +88,7 @@ function cargarLeccion(lec, eleccion) {
     $("#glifo").textContent = lec.ipa;
     $("#nombre").textContent = lec.nombre;
     $("#simbolo").setAttribute("aria-label", `Sonido ${lec.ipa}, ${lec.nombre}. Ver cómo se hace`);
+    if (mostrar && p == null) setTimeout(() => abrir("como"), 250);
   });
 }
 
@@ -176,7 +180,7 @@ function siguiente() {
   const orden = porTrabajar(est.lang);
   const prox = est.leccion ? orden[(orden.indexOf(est.leccion) + 1) % orden.length] : orden[0];
   toast(`Siguiente sonido: ${prox.ipa}`);
-  cargarLeccion(prox);
+  cargarLeccion(prox, false, true);
 }
 
 /* ---------- Grabar y calificar ---------- */
@@ -291,6 +295,10 @@ function abrir(id) {
   if (id === "como") pintarComo();
   const d = $(id === "como" ? "#hoja-como" : "#" + id);
   if (!d.open) d.showModal();
+  if (id === "como") {
+    d.scrollTop = 0;
+    reproducirTutorial();
+  }
 }
 
 document.querySelectorAll("dialog").forEach((d) => {
@@ -372,6 +380,9 @@ function pintarRacha() {
   $("#btn-progreso").setAttribute("aria-label", `Progreso. Racha de ${n} ${n === 1 ? "día" : "días"}`);
 }
 
+const bocaComo = crearBoca($("#como-boca"));
+const tut = { actual: null, comparar: false, relojes: [] };
+
 function pintarComo() {
   const l = est.leccion;
   $("#como-titulo").innerHTML = `<span class="ipa">${l.ipa}</span> <span style="color:var(--texto-2);font-weight:500">${esc(l.nombre)}</span>`;
@@ -379,13 +390,63 @@ function pintarComo() {
   $("#como-trampa").textContent = l.trampa;
   $("#como-par").innerHTML = l.par.map((p) => `<button data-decir="${esc(p)}" lang="${est.lang}" aria-label="Escuchar ${esc(p)}">${esc(p)}
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--acento)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6"/></svg></button>`).join("");
+
+  const t = (tut.actual = tutorial(est.lang, l.ipa));
+  tut.comparar = false;
+  $("#como-oir").textContent = `🔊 ${l.palabras[0]}`;
+  $("#como-oir").dataset.decir = l.palabras[0];
+  $("#como-comparar").hidden = !t?.espanol;
+  $("#como-comparar").textContent = t?.espanol ? `Comparar con ${t.espanol[1]}` : "";
+  $("#como-comparar").setAttribute("aria-pressed", "false");
+  $("#como-nota").textContent = t?.nota ?? "";
+  $("#como-pasos").innerHTML = t ? pasos(t.principal).map(([q, texto]) => `<li><b>${q}</b><span>${esc(texto)}</span></li>`).join("") : "";
+  $("#como-boca").setAttribute("aria-label", t ? `Corte de la boca diciendo ${l.ipa}: ${pasos(t.principal).map((p) => p.join(": ")).join(". ")}` : "");
+  ponerLeyenda();
 }
+
+function ponerLeyenda() {
+  const t = tut.actual;
+  $("#como-leyenda").innerHTML = tut.comparar && t?.espanol
+    ? `<b>Ámbar:</b> ${esc(t.espanol[1])}, como suele salir en español. Azul: como debe ser.`
+    : "Lengua en azul. La línea punteada es el aire; si la garganta vibra, hay voz.";
+}
+
+// Animación: de la boca en reposo a la postura del sonido, iluminando cada paso.
+function reproducirTutorial() {
+  const t = tut.actual;
+  if (!t) return;
+  tut.relojes.forEach(clearTimeout);
+  const fantasma = tut.comparar ? t.espanol?.[0] : null;
+  const lis = [...document.querySelectorAll("#como-pasos li")];
+  lis.forEach((li) => li.classList.remove("ahora"));
+  bocaComo.fijar(postura(), fantasma);
+  const secuencia = [{ p: postura(), queda: 250, viaje: 0 }, ...t.secuencia.map((s, k, a) => (k === a.length - 1 ? { queda: 1500, ...s } : s))];
+  bocaComo.animar(secuencia, { fantasma, alTerminar: () => bocaComo.fijar(t.principal, fantasma) });
+  tut.relojes = lis.map((li, k) => setTimeout(() => {
+    lis.forEach((x) => x.classList.toggle("ahora", x === li));
+  }, 500 + k * 1100));
+  tut.relojes.push(setTimeout(() => lis.forEach((x) => x.classList.remove("ahora")), 500 + lis.length * 1100 + 600));
+}
+
+$("#como-otra").onclick = reproducirTutorial;
+$("#como-comparar").onclick = () => {
+  tut.comparar = !tut.comparar;
+  $("#como-comparar").setAttribute("aria-pressed", tut.comparar);
+  ponerLeyenda();
+  reproducirTutorial();
+};
+$("#como-nombres").onclick = () => {
+  const si = $("#como-nombres").getAttribute("aria-pressed") !== "true";
+  $("#como-nombres").setAttribute("aria-pressed", si);
+  bocaComo.nombres(si);
+};
+$("#hoja-como").addEventListener("close", () => tut.relojes.forEach(clearTimeout));
 
 document.addEventListener("click", (e) => {
   const f = e.target.closest(".fila");
   if (f) {
     document.querySelectorAll("dialog[open]").forEach((d) => d.close());
-    cargarLeccion(LECCIONES[est.lang].find((l) => l.ipa === f.dataset.ipa), true);
+    cargarLeccion(LECCIONES[est.lang].find((l) => l.ipa === f.dataset.ipa), true, true);
   }
   const d = e.target.closest("[data-decir]");
   if (d) escuchar(d.dataset.decir);

@@ -1,0 +1,26 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Bocas</title>
+<link rel="stylesheet" href="../estilo.css">
+<style> body { display: block; padding: 12px; } .rejilla { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; } figure { margin: 0; background: var(--capa); border-radius: 14px; padding: 6px; } figcaption { text-align: center; font-size: 14px; color: var(--texto-2); } </style>
+<div class="rejilla" id="r"></div>
+<script type="module">
+  import { crearBoca, LENGUAS, postura } from "../js/boca.js";
+  const extra = { i: { labios: "estirados", mandibula: 0.05 }, u: { labios: "redondos", mandibula: 0.1 }, o: { labios: "redondos", mandibula: 0.25 },
+    "æ": { mandibula: 0.6, labios: "estirados" }, a: { mandibula: 0.6 }, "ɑ": { mandibula: 0.7 }, dental: { voz: true, aire: "roce" },
+    velar: { aire: "nariz", velo: "abajo", voz: true }, postalveolar: { labios: "medio redondos", aire: "roce" } };
+  for (const nombre of Object.keys(LENGUAS)) {
+    const f = document.createElement("figure");
+    f.innerHTML = `<div></div><figcaption>${nombre}</figcaption>`;
+    document.querySelector("#r").append(f);
+    crearBoca(f.firstElementChild).fijar(postura({ lengua: nombre, aire: "boca", ...extra[nombre] }), nombre === "ɪ" ? postura({ lengua: "i" }) : null);
+  }
+  const f = document.createElement("figure");
+  f.innerHTML = `<div></div><figcaption>f / v</figcaption>`;
+  document.querySelector("#r").append(f);
+  crearBoca(f.firstElementChild).fijar(postura({ labios: "dentilabial", aire: "roce", voz: true }));
+  const g = document.createElement("figure");
+  g.innerHTML = `<div></div><figcaption>m</figcaption>`;
+  document.querySelector("#r").append(g);
+  crearBoca(g.firstElementChild).fijar(postura({ labios: "cerrados", aire: "nariz", velo: "abajo", voz: true, mandibula: 0 }));
+</script>
