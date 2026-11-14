@@ -1,0 +1,19 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Prueba espeak-ng</title>
+<pre id="salida">cargando…</pre>
+<script type="module">
+  import crearEspeak from "./dist/espeak-ng.js";
+  import { fonemas, prepararTexto } from "./tokenizar.js";
+
+  const t0 = performance.now();
+  const espeak = await crearEspeak();
+  const motor = new espeak.eSpeakNGWorker();
+  const leer = (p) => { let fin = p.ptr; while (espeak.HEAPU8[fin]) fin++; return new TextDecoder().decode(espeak.HEAPU8.subarray(p.ptr, fin)); };
+  const ipa = (texto, voz) => (motor.set_voice(voz), fonemas(leer(motor.text_to_phonemes(prepararTexto(texto), 1))));
+
+  const carga = performance.now() - t0;
+  const filas = [["en-us", "It's 25 dollars, isn't it?"], ["en-us", "share"], ["fr", "Les enfants sont arrivés à l'école."], ["fr", "jeune"]]
+    .map(([voz, texto]) => `${voz}  ${texto}\n    ${ipa(texto, voz).join(" ")}`);
+  document.getElementById("salida").textContent = `carga: ${carga.toFixed(0)} ms\n\n${filas.join("\n")}`;
+</script>

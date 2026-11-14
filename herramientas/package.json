@@ -1,0 +1,9 @@
+{
+  "name": "herramientas",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "onnxruntime-web": "^1.22.0",
+    "puppeteer-core": "^24.43.1"
+  }
+}

@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0b">
+<title>IPA Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Noto Sans en un solo archivo con todos los símbolos: así la tilde nasal (ɑ̃) queda en la misma fuente que su vocal -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400&display=swap&text=%20abcdefghijklmnopqrstuvwxyz%C3%A1%C3%A6%C3%A9%C3%AD%C3%B0%C3%B1%C3%B3%C3%B8%C3%BA%C5%8B%C5%93%C9%90%C9%91%C9%94%C9%99%C9%9A%C9%9B%C9%9C%C9%A1%C9%A5%C9%AA%C9%B9%C9%BE%CA%81%CA%83%CA%8A%CA%8C%CA%92%CA%9D%CC%83%CE%B8%E1%B5%BB%E2%9C%93" rel="stylesheet">
+<style>
+:root {
+  --fondo: #0a0a0b;
+  --capa: #131315;
+  --capa-2: #1b1b1e;
+  --capa-3: #26262a;
+  --borde: rgba(255, 255, 255, .08);
+  --borde-2: rgba(255, 255, 255, .14);
+  --texto: #f4f4f5;
+  --texto-2: #a6a6ad;
+  --texto-3: #8c8c94;
+  --acento: #8fa0ff;
+  --acento-suave: rgba(143, 160, 255, .14);
+  --bien: #5fd38d;
+  --casi: #f3b84d;
+  --mal: #ff7b7b;
+  --r: 24px;
+  --r-s: 14px;
+  --curva: cubic-bezier(.2, .8, .2, 1);
+  --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ipa: "Noto Sans", "Inter", "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; }
+body {
+  min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
+  background: var(--fondo);
+  color: var(--texto);
+  font: 16px/1.45 var(--ui);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--acento); outline-offset: 3px; border-radius: 10px; }
+.ipa { font-family: var(--ipa); font-feature-settings: normal; }
+.oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+svg { display: block; }
+
+/* Barra de demo (solo mockup) */
+.demo { position: relative; z-index: 5; font-size: 12px; color: var(--texto-3); border-bottom: 1px solid var(--borde); }
+.demo summary { list-style: none; padding: 6px 16px; cursor: pointer; text-align: center; }
+.demo summary::-webkit-details-marker { display: none; }
+.demo nav { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; padding: 4px 16px 10px; }
+.demo nav button { padding: 6px 10px; border-radius: 99px; background: var(--capa-2); border: 1px solid var(--borde); color: var(--texto-2); }
+
+.app {
+  flex: 1; width: 100%; max-width: 440px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding: 0 16px;
+}
+
+/* Barra superior */
+.barra { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 60px; }
+.barra > :last-child { justify-self: end; }
+.icono {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center; color: var(--texto-2);
+  transition: background .2s, color .2s;
+}
+.icono:hover { background: var(--capa-2); color: var(--texto); }
+
+.segmento { position: relative; display: flex; padding: 3px; background: var(--capa-2); border: 1px solid var(--borde); border-radius: 99px; }
+.segmento button {
+  position: relative; z-index: 1; width: 58px; height: 32px; border-radius: 99px;
+  font-size: 14px; font-weight: 600; letter-spacing: .02em; color: var(--texto-3);
+  transition: color .25s;
+}
+.segmento button[aria-checked="true"] { color: var(--texto); }
+.segmento .pastilla {
+  position: absolute; top: 3px; left: 3px; width: 58px; height: 32px; border-radius: 99px;
+  background: var(--capa-3); box-shadow: 0 1px 2px rgba(0,0,0,.4), inset 0 0 0 1px var(--borde);
+  transition: transform .35s var(--curva);
+}
+.segmento[data-lang="fr"] .pastilla { transform: translateX(58px); }
+
+.racha { position: relative; color: var(--texto); font-size: 13px; font-weight: 600; }
+.racha svg { position: absolute; inset: 4px; }
+.racha span { position: relative; }
+
+/* Modo foco */
+.foco { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.cabeza { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4px 0 14px; }
+.ceja { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--texto-3); }
+.ceja i { width: 6px; height: 6px; border-radius: 50%; background: var(--casi); }
+.simbolo {
+  position: relative; margin: 6px 0 2px; padding: 0 24px; border-radius: var(--r);
+  font-size: clamp(84px, 16vh, 150px); line-height: 1.1; font-weight: 400; letter-spacing: -.02em;
+}
+.simbolo::before {
+  content: ""; position: absolute; inset: -10% -20%; z-index: -1;
+  background: radial-gradient(closest-side, rgba(143,160,255,.13), transparent);
+}
+.simbolo .ipa { display: inline-block; transition: opacity .3s, transform .45s var(--curva); }
+.cambiando .simbolo .ipa, .cambiando .nombre { opacity: 0; transform: translateY(8px); }
+.nombre { font-size: 17px; color: var(--texto-2); transition: opacity .3s, transform .45s var(--curva); }
+.como-link { margin-top: 10px; padding: 8px 14px; border-radius: 99px; font-size: 14px; font-weight: 500; color: var(--acento); }
+.como-link:hover { background: var(--acento-suave); }
+
+.carrusel {
+  display: flex; gap: 10px; margin: 0 -16px; padding: 0 30px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain;
+}
+.carrusel::-webkit-scrollbar { display: none; }
+.tarjeta {
+  flex: 0 0 100%; scroll-snap-align: center;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  min-height: 200px; padding: 20px 18px 18px;
+  background: var(--capa); border: 1px solid var(--borde); border-radius: var(--r);
+  transition: opacity .35s, transform .45s var(--curva);
+}
+.tarjeta:not(.actual) { opacity: .4; transform: scale(.97); }
+.tarjeta small { font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--texto-3); }
+.palabra { font-size: 40px; font-weight: 600; letter-spacing: -.025em; line-height: 1.15; margin: 2px 0 16px; }
+.palabra .sep { color: var(--texto-3); font-weight: 400; margin: 0 .25em; }
+
+.fichas { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 6px; }
+.ficha {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 40px; padding: 7px 8px 6px; border-radius: 12px;
+  background: var(--capa-2); border: 1px solid var(--borde); color: var(--texto-2);
+  transition: background .3s, border-color .3s, color .3s, transform .45s var(--curva), opacity .3s;
+}
+.ficha b { font: 400 22px/1.3 var(--ipa); }
+.ficha em { font: 400 12px/1.2 var(--ipa); font-style: normal; white-space: nowrap; }
+.ficha.objetivo { color: var(--acento); border-color: rgba(143,160,255,.45); }
+.ficha[data-nivel="bien"] { color: var(--bien); background: rgba(95,211,141,.1); border-color: rgba(95,211,141,.32); }
+.ficha[data-nivel="casi"] { color: var(--casi); background: rgba(243,184,77,.1); border-color: rgba(243,184,77,.35); }
+.ficha[data-nivel="mal"]  { color: var(--mal);  background: rgba(255,123,123,.1); border-color: rgba(255,123,123,.38); }
+.ficha.entra { opacity: 0; transform: translateY(6px); }
+.fichas .corte { width: 1px; height: 30px; margin: 8px 6px; background: var(--borde-2); }
+.pensando .ficha { animation: latido 1s ease-in-out infinite; }
+@keyframes latido { 50% { opacity: .45; } }
+
+.veredicto { margin-top: 16px; max-width: 32ch; font-size: 15px; color: var(--texto-2); min-height: 22px; }
+.veredicto strong { font-weight: 600; margin-right: 6px; }
+.veredicto[data-nivel="bien"] strong { color: var(--bien); }
+.veredicto[data-nivel="casi"] strong { color: var(--casi); }
+.veredicto[data-nivel="mal"] strong { color: var(--mal); }
+
+.puntos { display: flex; justify-content: center; gap: 6px; padding: 14px 0 4px; }
+.puntos i { width: 6px; height: 6px; border-radius: 3px; background: var(--capa-3); transition: width .35s var(--curva), background .35s; }
+.puntos i.actual { width: 18px; background: var(--texto-2); }
+
+/* Mando inferior */
+.mando { position: sticky; bottom: 0; padding: 4px 0 calc(18px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--fondo) 30%); }
+.pista { height: 28px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--texto-3); font-variant-numeric: tabular-nums; }
+.onda { display: none; align-items: center; gap: 3px; height: 28px; }
+.onda i { width: 3px; height: 4px; border-radius: 2px; background: var(--acento); transition: height .09s linear; }
+[data-modo="grabando"] .onda { display: flex; }
+[data-modo="grabando"] .pista-texto { display: none; }
+.botones { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin-top: 6px; }
+.botones > * { justify-self: center; }
+.lateral {
+  width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--capa-2); border: 1px solid var(--borde); color: var(--texto);
+  transition: background .2s, transform .2s var(--curva);
+}
+.lateral:hover { background: var(--capa-3); }
+.lateral:active, .grabar:active { transform: scale(.94); }
+.grabar {
+  position: relative; width: 84px; height: 84px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--acento); color: var(--fondo);
+  box-shadow: 0 10px 34px rgba(143,160,255,.28);
+  transition: transform .2s var(--curva), box-shadow .3s;
+}
+.grabar::before, .grabar::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid var(--acento); opacity: 0;
+}
+[data-modo="grabando"] .grabar::before { animation: onda 1.6s ease-out infinite; }
+[data-modo="grabando"] .grabar::after { animation: onda 1.6s .8s ease-out infinite; }
+@keyframes onda { from { opacity: .55; transform: scale(1); } to { opacity: 0; transform: scale(1.55); } }
+.grabar .stop, [data-modo="grabando"] .grabar .mic { display: none; }
+[data-modo="grabando"] .grabar .stop { display: block; }
+[data-modo="analizando"] .grabar { opacity: .5; pointer-events: none; }
+
+/* Pantallas y hoja (dialog) */
+dialog { color: var(--texto); background: var(--fondo); border: 0; padding: 0; }
+dialog::backdrop { background: rgba(0,0,0,.62); backdrop-filter: blur(2px); }
+.pantalla {
+  width: 100%; max-width: 440px; height: 100%; max-height: none; margin: 0 auto;
+  padding: 0 16px calc(24px + env(safe-area-inset-bottom)); overflow-y: auto;
+}
+.pantalla[open] { animation: entra .4s var(--curva); }
+@keyframes entra { from { opacity: 0; transform: translateY(14px); } }
+.hoja {
+  width: 100%; max-width: 440px; margin: auto auto 0; max-height: 86vh;
+  padding: 10px 20px calc(24px + env(safe-area-inset-bottom));
+  background: var(--capa); border: 1px solid var(--borde); border-bottom: 0; border-radius: 28px 28px 0 0;
+}
+.hoja[open] { animation: sube .45s var(--curva); }
+@keyframes sube { from { transform: translateY(100%); } }
+.asa { width: 36px; height: 4px; border-radius: 2px; background: var(--capa-3); margin: 0 auto 18px; }
+
+.encabezado { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; height: 60px; margin-bottom: 8px; }
+.encabezado h2 { text-align: center; font-size: 17px; font-weight: 600; }
+.titulo-grande { font-size: 30px; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; }
+.sub { color: var(--texto-2); font-size: 15px; }
+.grupo { margin-top: 26px; }
+.grupo > h3 { font-size: 13px; font-weight: 500; color: var(--texto-3); margin: 0 4px 10px; }
+.lista { display: flex; flex-direction: column; gap: 8px; }
+.fila {
+  display: grid; grid-template-columns: 52px 1fr auto; gap: 14px; align-items: center; width: 100%;
+  padding: 10px 14px 10px 10px; text-align: left; border-radius: 18px;
+  background: var(--capa); border: 1px solid var(--borde); transition: background .2s;
+}
+.fila:hover { background: var(--capa-2); }
+.fila .tile { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: var(--capa-2); font: 400 26px/1 var(--ipa); }
+.fila strong { display: block; font-weight: 500; }
+.fila span { font-size: 13px; color: var(--texto-3); }
+.nota-fila { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.barrita { width: 44px; height: 4px; border-radius: 2px; background: var(--capa-3); overflow: hidden; }
+.barrita i { display: block; height: 100%; border-radius: 2px; }
+
+.tarjeta-p { padding: 20px; border-radius: var(--r); background: var(--capa); border: 1px solid var(--borde); margin-top: 12px; }
+.cifra { font-size: 56px; font-weight: 700; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+.cifra small { font-size: 17px; font-weight: 500; letter-spacing: 0; color: var(--texto-2); margin-left: 8px; }
+.calendario { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 18px; justify-items: center; }
+.calendario b { font-size: 11px; font-weight: 500; color: var(--texto-3); }
+.calendario i { width: 12px; height: 12px; border-radius: 50%; background: var(--capa-3); }
+.calendario i.si { background: var(--acento); }
+.calendario i.hoy { box-shadow: 0 0 0 2px var(--fondo), 0 0 0 3.5px var(--acento); }
+.sube-baja { color: var(--bien); font-size: 14px; font-weight: 500; }
+
+.texto-hoja h3 { font-size: 13px; font-weight: 500; color: var(--texto-3); margin: 20px 0 6px; }
+.texto-hoja p { color: var(--texto); font-size: 16px; }
+.par { display: flex; gap: 8px; }
+.par button { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 16px; background: var(--capa-2); border: 1px solid var(--borde); font-size: 18px; font-weight: 600; }
+
+.centro { min-height: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; gap: 14px; padding: 32px 4px; }
+.centro .sub { max-width: 34ch; margin: 0 auto; }
+.disco { width: 120px; height: 120px; margin: 0 auto 10px; position: relative; display: grid; place-items: center; }
+.disco svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.disco .arco { transition: stroke-dashoffset .3s linear; }
+.disco .glifo { font: 400 46px/1 var(--ipa); transition: opacity .4s; }
+.medidor { font-size: 14px; color: var(--texto-2); font-variant-numeric: tabular-nums; }
+.aviso { font-size: 13px; color: var(--texto-3); }
+.primario, .secundario {
+  width: 100%; height: 54px; border-radius: 16px; font-weight: 600; font-size: 16px;
+  transition: transform .2s var(--curva), background .2s;
+}
+.primario { background: var(--acento); color: var(--fondo); }
+.secundario { background: var(--capa-2); border: 1px solid var(--borde); }
+.acciones { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.pasos { text-align: left; counter-reset: paso; display: flex; flex-direction: column; gap: 10px; padding: 18px; border-radius: 20px; background: var(--capa); border: 1px solid var(--borde); list-style: none; }
+.pasos li { counter-increment: paso; display: grid; grid-template-columns: 26px 1fr; gap: 10px; font-size: 15px; }
+.pasos li::before { content: counter(paso); width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 600; background: var(--capa-3); color: var(--texto-2); }
+.icono-grande { width: 72px; height: 72px; margin: 0 auto 6px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,123,123,.1); color: var(--mal); }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(160px + env(safe-area-inset-bottom)); z-index: 4;
+  padding: 10px 16px; border-radius: 99px; background: var(--capa-3); border: 1px solid var(--borde-2);
+  font-size: 14px; opacity: 0; transform: translate(-50%, 8px); pointer-events: none;
+  transition: opacity .3s, transform .4s var(--curva);
+}
+.toast.ver { opacity: 1; transform: translate(-50%, 0); }
+
+@media (min-height: 860px) { .tarjeta { min-height: 236px; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  [data-modo="grabando"] .grabar { box-shadow: 0 0 0 6px rgba(143,160,255,.35); }
+}
+</style>
+</head>
+<body>
+
+<details class="demo">
+  <summary>Mockup B · ver estados</summary>
+  <nav aria-label="Estados del mockup">
+    <button data-demo="inicio">Sesión</button>
+    <button data-demo="grabando">Grabando</button>
+    <button data-demo="mal">Resultado: mal</button>
+    <button data-demo="casi">Resultado: casi</button>
+    <button data-demo="bien">Resultado: bien</button>
+    <button data-demo="carga">Primera vez</button>
+    <button data-demo="error">Micrófono bloqueado</button>
+    <button data-demo="sonidos">Sonidos</button>
+    <button data-demo="progreso">Progreso</button>
+  </nav>
+</details>
+
+<div class="app" id="app">
+  <header class="barra">
+    <button class="icono" id="btn-sonidos" aria-label="Todos los sonidos">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></svg>
+    </button>
+    <div class="segmento" id="idioma" role="radiogroup" aria-label="Idioma" data-lang="en">
+      <span class="pastilla" aria-hidden="true"></span>
+      <button role="radio" aria-checked="true" data-lang="en" aria-label="Inglés">EN</button>
+      <button role="radio" aria-checked="false" data-lang="fr" aria-label="Francés" tabindex="-1">FR</button>
+    </div>
+    <button class="icono racha" id="btn-progreso" aria-label="Progreso. Racha de 6 días">
+      <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16" fill="none" stroke="var(--capa-3)" stroke-width="2.5"/><circle cx="18" cy="18" r="16" fill="none" stroke="var(--acento)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="40" transform="rotate(-90 18 18)"/></svg>
+      <span>6</span>
+    </button>
+  </header>
+
+  <main class="foco" id="foco">
+    <section class="cabeza" aria-labelledby="simbolo">
+      <p class="ceja" id="ceja"></p>
+      <button class="simbolo" id="simbolo"><span class="ipa" id="glifo"></span></button>
+      <p class="nombre" id="nombre"></p>
+      <button class="como-link" id="btn-como">Cómo se hace</button>
+    </section>
+
+    <section class="carrusel" id="carrusel" role="region" aria-roledescription="carrusel" aria-label="Palabras para practicar" tabindex="0"></section>
+    <div class="puntos" id="puntos" aria-hidden="true"></div>
+  </main>
+
+  <footer class="mando">
+    <div class="pista" aria-hidden="true">
+      <span class="pista-texto" id="pista">Toca y di la palabra</span>
+      <span class="onda" id="onda"></span>
+    </div>
+    <div class="botones">
+      <button class="lateral" id="btn-escuchar" aria-label="Escuchar la palabra">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6"/><path d="M18.2 6.5a8 8 0 0 1 0 11"/></svg>
+      </button>
+      <button class="grabar" id="btn-grabar" aria-label="Grabar" aria-pressed="false">
+        <svg class="mic" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>
+        <svg class="stop" width="26" height="26" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="3.5" fill="currentColor"/></svg>
+      </button>
+      <button class="lateral" id="btn-siguiente" aria-label="Siguiente palabra">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </footer>
+</div>
+
+<p class="oculto" aria-live="polite" id="anuncio"></p>
+<div class="toast" id="toast" role="status"></div>
+
+<!-- Cómo se hace -->
+<dialog class="hoja" id="hoja-como" aria-labelledby="como-titulo">
+  <div class="asa"></div>
+  <div class="texto-hoja">
+    <h2 class="titulo-grande" id="como-titulo"></h2>
+    <h3>Cómo se hace</h3><p id="como-texto"></p>
+    <h3>Ojo</h3><p id="como-trampa"></p>
+    <h3>Par mínimo</h3><div class="par" id="como-par"></div>
+  </div>
+  <div class="acciones"><button class="secundario" data-cerrar>Entendido</button></div>
+</dialog>
+
+<!-- Todos los sonidos -->
+<dialog class="pantalla" id="sonidos" aria-labelledby="sonidos-titulo">
+  <div class="encabezado">
+    <button class="icono" data-cerrar aria-label="Volver"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <h2 id="sonidos-titulo">Sonidos</h2><span></span>
+  </div>
+  <p class="titulo-grande" id="sonidos-idioma"></p>
+  <p class="sub" id="sonidos-resumen"></p>
+  <div id="sonidos-grupos"></div>
+</dialog>
+
+<!-- Progreso -->
+<dialog class="pantalla" id="progreso" aria-labelledby="progreso-titulo">
+  <div class="encabezado">
+    <button class="icono" data-cerrar aria-label="Volver"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <h2 id="progreso-titulo">Progreso</h2><span></span>
+  </div>
+  <div class="tarjeta-p">
+    <p class="cifra">6<small>días seguidos</small></p>
+    <p class="sub" style="margin-top:8px">Practicaste 17 días en las últimas 4 semanas.</p>
+    <div class="calendario" id="calendario" role="img" aria-label="Días practicados en las últimas 4 semanas: 17"></div>
+  </div>
+  <div class="tarjeta-p">
+    <p class="cifra" id="promedio"></p>
+    <p class="sube-baja" id="tendencia"></p>
+    <svg id="linea" viewBox="0 0 300 64" width="100%" height="64" style="margin-top:14px" role="img" aria-label="Acierto de los últimos 12 intentos"></svg>
+  </div>
+  <div class="grupo">
+    <h3>Para trabajar</h3>
+    <div class="lista" id="trabajar"></div>
+  </div>
+</dialog>
+
+<!-- Primera vez: descarga del modelo -->
+<dialog class="pantalla" id="carga" aria-labelledby="carga-titulo">
+  <div class="centro">
+    <div class="disco" aria-hidden="true">
+      <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="none" stroke="var(--capa-3)" stroke-width="4"/><circle class="arco" id="carga-arco" cx="60" cy="60" r="56" fill="none" stroke="var(--acento)" stroke-width="4" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="351.9"/></svg>
+      <span class="glifo" id="carga-glifo">θ</span>
+    </div>
+    <p class="titulo-grande" id="carga-titulo">Preparando el oído de la app</p>
+    <p class="sub" id="carga-texto">La primera vez se descarga el modelo que escucha tu pronunciación sonido por sonido. Son unos 300 MB y se guardan en el teléfono: después funciona sin internet y tu voz no sale del celular.</p>
+    <div>
+      <div class="barrita" style="width:100%;height:6px;border-radius:3px" role="progressbar" aria-label="Descarga del modelo" aria-valuemin="0" aria-valuemax="302" aria-valuenow="0" id="carga-barra"><i style="width:0;background:var(--acento);transition:width .3s linear"></i></div>
+      <p class="medidor" id="carga-medidor" style="margin-top:10px">0 de 302 MB</p>
+    </div>
+    <p class="aviso" id="carga-aviso">Mejor con Wi-Fi. Deja esta pantalla abierta mientras termina.</p>
+    <div class="acciones">
+      <button class="primario" id="carga-listo" hidden>Empezar</button>
+      <button class="secundario" id="carga-ver">Ver los sonidos mientras tanto</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Error: micrófono bloqueado -->
+<dialog class="pantalla" id="error" aria-labelledby="error-titulo">
+  <div class="centro">
+    <div class="icono-grande" aria-hidden="true">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 9V6a3 3 0 0 1 6 0v5m-.6 2.4A3 3 0 0 1 9 11"/><path d="M5.5 11a6.5 6.5 0 0 0 10.7 5M18.4 12.5c.06-.5.1-1 .1-1.5M12 17.5V21M4 4l16 16"/></svg>
+    </div>
+    <p class="titulo-grande" id="error-titulo">No tengo acceso al micrófono</p>
+    <p class="sub">Chrome lo bloqueó para esta página. Sin micrófono no puedo escuchar cómo pronuncias. El audio se analiza en el teléfono y no se envía a ningún lado.</p>
+    <ol class="pasos">
+      <li>Toca el ícono junto a la dirección, arriba en Chrome.</li>
+      <li>Entra a Permisos y luego a Micrófono.</li>
+      <li>Elige Permitir y vuelve aquí.</li>
+    </ol>
+    <div class="acciones">
+      <button class="primario" id="error-reintentar">Intentar de nuevo</button>
+      <button class="secundario" data-cerrar>Seguir solo escuchando</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+const LECCIONES = {"en":[{"ipa":"ɪ","nombre":"i corta (ship)","como":"Lengua un poco más baja y relajada que en la i española. Boca casi neutra, sin sonreír. Es corta.","trampa":"Si la dices como i española, ship suena a sheep.","palabras":["ship","live","it","bit","fill","minute"],"par":["ship","sheep"]},{"ipa":"i","nombre":"i larga (sheep)","como":"Labios estirados como sonriendo, lengua alta y tensa. Alárgala un poco.","trampa":"Es parecida a la i española pero más larga y tensa.","palabras":["sheep","leave","eat","beat","feel","team"],"par":["leave","live"]},{"ipa":"æ","nombre":"a abierta (cat)","como":"Abre mucho la mandíbula y estira los labios hacia los lados, entre una a y una e.","trampa":"Los hispanohablantes la dicen como a normal: cat y cut suenan igual.","palabras":["cat","bad","man","happy","black","plan"],"par":["bad","bed"]},{"ipa":"ʌ","nombre":"a corta (cut)","como":"Boca medio abierta y relajada, lengua al centro. Como una a española corta y apagada.","trampa":"No la redondees como o: but no es bot.","palabras":["cut","but","love","money","up","trouble"],"par":["cut","cat"]},{"ipa":"ɑ","nombre":"a de garganta (hot)","como":"Abre bien la boca y baja la lengua hacia atrás, como cuando el médico te pide decir aaa.","trampa":"En inglés americano hot y lot se dicen con a, no con o.","palabras":["hot","stop","father","job","body","not"],"par":["cot","cut"]},{"ipa":"ə","nombre":"schwa (about)","como":"Todo relajado: boca entreabierta, lengua quieta en el centro. Es un sonido débil y corto, como un eh perezoso.","trampa":"Es la vocal más común del inglés. Las sílabas sin acento casi siempre se reducen a schwa, no se leen como se escriben.","palabras":["about","problem","data","banana","support","today"],"par":["support","sport"]},{"ipa":"ʊ","nombre":"u corta (full)","como":"Labios poco redondeados y lengua relajada. Más corta y floja que la u española.","trampa":"Si la dices como u española, full suena a fool.","palabras":["full","book","good","put","look","could"],"par":["full","fool"]},{"ipa":"ɜ","nombre":"vocal de bird (con r)","como":"Labios neutros, lengua al centro y la punta doblada hacia atrás sin tocar nada, todo en un solo sonido.","trampa":"No digas ber-d con e más r: es una sola vocal con color de r.","palabras":["bird","work","learn","first","word","research"],"par":["work","walk"]},{"ipa":"θ","nombre":"th sorda (think)","como":"Punta de la lengua entre los dientes y sopla aire sin voz. Es la z de España.","trampa":"No la cambies por t ni s: think no es tink ni sink.","palabras":["think","three","thought","method","both","growth"],"par":["think","sink"]},{"ipa":"ð","nombre":"th sonora (this)","como":"Igual que θ, lengua entre los dientes, pero haciendo vibrar las cuerdas vocales. Parecida a la d suave de 'nada'.","trampa":"No la digas como una d dura: this no es dis.","palabras":["this","the","other","whether","father","though"],"par":["they","day"]},{"ipa":"v","nombre":"v de dientes","como":"Dientes de arriba sobre el labio de abajo, con voz. Debe sentirse un zumbido en el labio.","trampa":"En español b y v suenan igual; en inglés vest y best son palabras distintas.","palabras":["very","value","level","have","over","improve"],"par":["vest","best"]},{"ipa":"z","nombre":"s sonora (zoo)","como":"Como una s pero con voz: zumba como una abeja. Pon la mano en la garganta y siente la vibración.","trampa":"Muchas s escritas suenan z: is, was, easy, reason.","palabras":["zoo","is","was","easy","reason","busy"],"par":["zip","sip"]},{"ipa":"ʃ","nombre":"sh (she)","como":"Labios hacia adelante en forma de trompa, lengua un poco atrás, sopla sin voz: el sonido de pedir silencio.","trampa":"No la cambies por ch: share no es chair.","palabras":["she","share","machine","nation","issue","sure"],"par":["share","chair"]},{"ipa":"dʒ","nombre":"j inglesa (job)","como":"Empieza como una d y suéltala en una sh con voz. Labios un poco hacia adelante.","trampa":"No es la j española (jota) ni la y: job no es yob.","palabras":["job","just","change","large","project","manager"],"par":["jet","yet"]},{"ipa":"ʒ","nombre":"zh (vision)","como":"La sh pero con voz. Como la ll argentina de 'yo'.","trampa":"Suele escribirse s: vision, usual, decision.","palabras":["vision","usual","decision","measure","pleasure","casual"],"par":["vision","fission"]},{"ipa":"h","nombre":"h de aire (hat)","como":"Solo aire suave saliendo de la garganta, como empañar un vidrio. Sin roce.","trampa":"La jota española raspa demasiado. Y no te la comas: hat no es at.","palabras":["hat","help","how","behind","huge","hold"],"par":["hold","old"]},{"ipa":"ŋ","nombre":"ng (sing)","como":"La parte de atrás de la lengua toca el paladar blando y el aire sale por la nariz. No suena la g al final.","trampa":"No agregues una g o una k: thing no es thingk.","palabras":["sing","thing","long","working","language","think"],"par":["sin","sing"]},{"ipa":"ɹ","nombre":"r inglesa (red)","como":"La lengua no toca nada: la punta se curva hacia atrás y los labios se redondean un poco. Cero vibración.","trampa":"No la vibres ni la golpees como la r española.","palabras":["red","right","run","really","problem","around"],"par":["right","light"]},{"ipa":"l","nombre":"l oscura (feel)","como":"Al final de sílaba, la punta toca detrás de los dientes y la parte de atrás de la lengua sube. Suena más oscura, casi como una u.","trampa":"La l española es clara; en feel, full o model la l es pesada.","palabras":["feel","full","model","people","skill","will"],"par":["feel","fill"]},{"ipa":"s","nombre":"s inicial sin e (study)","como":"Empieza directo con la s, sin vocal antes. Alarga la s un instante y pasa a la consonante.","trampa":"No digas estudy, espeak ni eschool.","palabras":["study","speak","school","state","skill","spring"],"par":["state","estate"]}],"fr":[{"ipa":"y","nombre":"u francesa (tu)","como":"Pon la lengua como para decir i y redondea los labios como para decir u. Mantén la lengua adelante.","trampa":"Si la dices como u española, tu (tú) suena a tout (todo).","palabras":["tu","rue","vu","salut","musique","étudier"],"par":["tu","tout"]},{"ipa":"u","nombre":"ou (tout)","como":"Como la u española, labios bien redondeados hacia adelante.","trampa":"Se escribe ou: no la confundas con la u francesa.","palabras":["tout","nous","vous","jour","toujours","souvent"],"par":["roue","rue"]},{"ipa":"ø","nombre":"eu cerrada (deux)","como":"Lengua como para decir e, labios redondeados como para decir o. Boca poco abierta.","trampa":"No la digas como e ni como o.","palabras":["deux","peu","jeu","bleu","heureux","mieux"],"par":["deux","doux"]},{"ipa":"œ","nombre":"eu abierta (peur)","como":"Como ø pero con la boca más abierta. Suele aparecer antes de una consonante que se pronuncia.","trampa":"Es frecuente en -eur: professeur, heure, sœur.","palabras":["peur","heure","sœur","jeune","neuf","professeur"],"par":["jeune","jeûne"]},{"ipa":"ə","nombre":"e muda (je)","como":"Labios ligeramente redondeados, sonido corto y relajado. A menudo desaparece al hablar rápido.","trampa":"No la digas como e española clara: je no es ye ni che.","palabras":["je","le","ne","petit","demain","premier"],"par":["le","les"]},{"ipa":"e","nombre":"é cerrada (été)","como":"Labios estirados y boca casi cerrada. Más tensa y cerrada que la e española.","trampa":"Se escribe é, -er, -ez: parler, parlez.","palabras":["été","café","parler","nez","les","aller"],"par":["été","était"]},{"ipa":"ɛ","nombre":"è abierta (mère)","como":"Boca más abierta que en é, mandíbula baja.","trampa":"Se escribe è, ê, ai: mère, fête, mais.","palabras":["mère","fête","mais","lait","très","elle"],"par":["fait","fée"]},{"ipa":"o","nombre":"o cerrada (beau)","como":"Labios muy redondeados y boca casi cerrada, como un beso.","trampa":"Se escribe au, eau, ô.","palabras":["beau","eau","chaud","côté","faux","hôtel"],"par":["saule","sol"]},{"ipa":"ɔ","nombre":"o abierta (porte)","como":"Boca más abierta que en la o cerrada y labios menos redondeados.","trampa":"Suele ir antes de consonante pronunciada: porte, homme.","palabras":["porte","homme","bonne","école","téléphone","notre"],"par":["notre","nôtre"]},{"ipa":"ɑ̃","nombre":"nasal an (enfant)","como":"Boca abierta como en a y el aire sale a la vez por la boca y la nariz. No cierres con n ni m.","trampa":"No digas 'an' con n al final: la n escrita no se pronuncia.","palabras":["enfant","temps","dans","grand","France","lent"],"par":["lent","long"]},{"ipa":"ɔ̃","nombre":"nasal on (bon)","como":"Labios redondeados como en o y aire por la nariz. Sin n final.","trampa":"bon y bonne son distintos: en bonne sí suena la n y la vocal no es nasal.","palabras":["bon","nom","maison","monde","long","réponse"],"par":["bon","bonne"]},{"ipa":"ɛ̃","nombre":"nasal in (vin)","como":"Boca como en è y aire por la nariz. Sin n final.","trampa":"Se escribe in, ain, ein, un: vin, pain, plein, un.","palabras":["vin","pain","matin","demain","important","plein"],"par":["vin","vent"]},{"ipa":"ʁ","nombre":"r francesa (Paris)","como":"La parte de atrás de la lengua se acerca a la campanilla y raspa suave, como hacer gárgaras muy suaves. La punta queda abajo.","trampa":"No la vibres con la punta de la lengua como la r española.","palabras":["Paris","rouge","très","merci","travail","heureux"],"par":["rue","lu"]},{"ipa":"z","nombre":"s sonora (rose)","como":"Una s con voz que zumba. Entre dos vocales, la s escrita suena así.","trampa":"poisson (pescado, s) y poison (veneno, z) son palabras distintas.","palabras":["rose","maison","zéro","chose","musique","les amis"],"par":["poison","poisson"]},{"ipa":"ʒ","nombre":"j francesa (je)","como":"Labios hacia adelante y una sh con voz, como la ll argentina.","trampa":"No es la jota española ni la y: je, jour, rouge.","palabras":["je","jour","rouge","manger","voyage","toujours"],"par":["gens","chant"]},{"ipa":"ʃ","nombre":"ch francesa (chat)","como":"Labios en trompa, sopla sin voz: el sonido de pedir silencio.","trampa":"No es la ch de chocolate: chat suena 'shá'.","palabras":["chat","chose","chercher","acheter","riche","chaque"],"par":["chou","joue"]},{"ipa":"v","nombre":"v de dientes","como":"Dientes de arriba sobre el labio de abajo, con voz.","trampa":"vin (vino) y bain (baño) son distintos.","palabras":["vin","vous","voiture","avoir","travail","souvent"],"par":["vin","bain"]},{"ipa":"ɥ","nombre":"u semivocal (huit)","como":"Una y francesa muy corta que se desliza a la siguiente vocal, con los labios redondeados.","trampa":"No la digas como u española: huit no es uit.","palabras":["huit","nuit","lui","puis","cuisine","suis"],"par":["lui","Louis"]}]};
+// Fonemas esperados por palabra (espeak-ng, mismo proceso que fonemas.esperado)
+const IPA = {"en":{"about":["ɐ","b","aʊ","t"],"around":["ə","ɹ","aʊ","n","d"],"bad":["b","æ","d"],"banana":["b","ɐ","n","æ","n","ə"],"beat":["b","i","t"],"bed":["b","ɛ","d"],"behind":["b","ᵻ","h","aɪ","n","d"],"best":["b","ɛ","s","t"],"bird":["b","ɜ","d"],"bit":["b","ɪ","t"],"black":["b","l","æ","k"],"body":["b","ɑ","d","i"],"book":["b","ʊ","k"],"both":["b","oʊ","θ"],"busy":["b","ɪ","z","i"],"but":["b","ʌ","t"],"casual":["k","æ","ʒ","u","ə","l"],"cat":["k","æ","t"],"chair":["tʃ","ɛɹ"],"change":["tʃ","eɪ","n","dʒ"],"cot":["k","ɑ","t"],"could":["k","ʊ","d"],"cut":["k","ʌ","t"],"data":["d","eɪ","ɾ","ə"],"day":["d","eɪ"],"decision":["d","ᵻ","s","ɪ","ʒ","ə","n"],"easy":["i","z","i"],"eat":["i","t"],"estate":["ᵻ","s","t","eɪ","t"],"father":["f","ɑ","ð","ɚ"],"feel":["f","i","l"],"fill":["f","ɪ","l"],"first":["f","ɜ","s","t"],"fission":["f","ɪ","ʃ","ə","n"],"fool":["f","u","l"],"full":["f","ʊ","l"],"good":["ɡ","ʊ","d"],"growth":["ɡ","ɹ","oʊ","θ"],"happy":["h","æ","p","i"],"hat":["h","æ","t"],"have":["h","æ","v"],"help":["h","ɛ","l","p"],"hold":["h","oʊ","l","d"],"hot":["h","ɑ","t"],"how":["h","aʊ"],"huge":["h","j","u","dʒ"],"improve":["ɪ","m","p","ɹ","u","v"],"is":["ɪ","z"],"issue":["ɪ","ʃ","u"],"it":["ɪ","t"],"jet":["dʒ","ɛ","t"],"job":["dʒ","ɑ","b"],"just":["dʒ","ʌ","s","t"],"language":["l","æ","ŋ","ɡ","w","ɪ","dʒ"],"large":["l","ɑ","ɹ","dʒ"],"learn":["l","ɜ","n"],"leave":["l","i","v"],"level":["l","ɛ","v","ə","l"],"light":["l","aɪ","t"],"live":["l","aɪ","v"],"long":["l","ɔ","ŋ"],"look":["l","ʊ","k"],"love":["l","ʌ","v"],"machine":["m","ə","ʃ","i","n"],"man":["m","æ","n"],"manager":["m","æ","n","ɪ","dʒ","ɚ"],"measure":["m","ɛ","ʒ","ɚ"],"method":["m","ɛ","θ","ə","d"],"minute":["m","ɪ","n","ɪ","t"],"model":["m","ɑ","d","ə","l"],"money":["m","ʌ","n","i"],"nation":["n","eɪ","ʃ","ə","n"],"not":["n","ɑ","t"],"old":["oʊ","l","d"],"other":["ʌ","ð","ɚ"],"over":["oʊ","v","ɚ"],"people":["p","i","p","ə","l"],"plan":["p","l","æ","n"],"pleasure":["p","l","ɛ","ʒ","ɚ"],"problem":["p","ɹ","ɑ","b","l","ə","m"],"project":["p","ɹ","ɑ","dʒ","ɛ","k","t"],"put":["p","ʊ","t"],"really":["ɹ","iə","l","i"],"reason":["ɹ","i","z","ə","n"],"red":["ɹ","ɛ","d"],"research":["ɹ","ᵻ","s","ɜ","tʃ"],"right":["ɹ","aɪ","t"],"run":["ɹ","ʌ","n"],"school":["s","k","u","l"],"share":["ʃ","ɛɹ"],"she":["ʃ","i"],"sheep":["ʃ","i","p"],"ship":["ʃ","ɪ","p"],"sin":["s","ɪ","n"],"sing":["s","ɪ","ŋ"],"sink":["s","ɪ","ŋ","k"],"sip":["s","ɪ","p"],"skill":["s","k","ɪ","l"],"speak":["s","p","i","k"],"sport":["s","p","ɔ","ɹ","t"],"spring":["s","p","ɹ","ɪ","ŋ"],"state":["s","t","eɪ","t"],"stop":["s","t","ɑ","p"],"study":["s","t","ʌ","d","i"],"support":["s","ə","p","ɔ","ɹ","t"],"sure":["ʃ","ʊɹ"],"team":["t","i","m"],"the":["ð","ə"],"they":["ð","eɪ"],"thing":["θ","ɪ","ŋ"],"think":["θ","ɪ","ŋ","k"],"this":["ð","ɪ","s"],"though":["ð","oʊ"],"thought":["θ","ɔ","t"],"three":["θ","ɹ","i"],"today":["t","ə","d","eɪ"],"trouble":["t","ɹ","ʌ","b","ə","l"],"up":["ʌ","p"],"usual":["j","u","ʒ","u","ə","l"],"value":["v","æ","l","j","u"],"very":["v","ɛ","ɹ","i"],"vest":["v","ɛ","s","t"],"vision":["v","ɪ","ʒ","ə","n"],"walk":["w","ɔ","k"],"was":["w","ʌ","z"],"whether":["w","ɛ","ð","ɚ"],"will":["w","ɪ","l"],"word":["w","ɜ","d"],"work":["w","ɜ","k"],"working":["w","ɜ","k","ɪ","ŋ"],"yet":["j","ɛ","t"],"zip":["z","ɪ","p"],"zoo":["z","u"]},"fr":{"France":["f","ʁ","ɑ̃","s"],"Louis":["l","w","i"],"Paris":["p","a","ʁ","i"],"acheter":["a","ʃ","t","e"],"aller":["a","l","e"],"avoir":["a","v","w","a","ʁ"],"bain":["b","ɛ̃"],"beau":["b","o"],"bleu":["b","l","ø"],"bon":["b","ɔ̃"],"bonne":["b","ɔ","n"],"café":["k","a","f","e"],"chant":["ʃ","ɑ̃"],"chaque":["ʃ","a","k"],"chat":["ʃ","a"],"chaud":["ʃ","o"],"chercher":["ʃ","ɛ","ʁ","ʃ","e"],"chose":["ʃ","ɔ","z"],"chou":["ʃ","u"],"cuisine":["k","y","i","z","i","n"],"côté":["k","o","t","e"],"dans":["d","ɑ̃"],"demain":["d","ə","m","ɛ̃"],"deux":["d","ø"],"doux":["d","u"],"eau":["o"],"elle":["ɛ","l"],"enfant":["ɑ̃","f","ɑ̃"],"fait":["f","ɛ"],"faux":["f","o"],"fée":["f","e"],"fête":["f","ɛ","t"],"gens":["ʒ","ɑ̃"],"grand":["ɡ","ʁ","ɑ̃"],"heure":["œ","ʁ"],"heureux":["ø","ʁ","ø"],"homme":["ɔ","m"],"huit":["y","i","t"],"hôtel":["o","t","ɛ","l"],"important":["ɛ̃","p","ɔ","ʁ","t","ɑ̃"],"je":["ʒ","ə"],"jeu":["ʒ","ø"],"jeune":["ʒ","ø","n"],"jeûne":["ʒ","ø","n"],"joue":["ʒ","u"],"jour":["ʒ","u","ʁ"],"lait":["l","ɛ"],"le":["l","ə"],"lent":["l","ɑ̃"],"les":["l","e"],"les amis":["l","e","z","a","m","i"],"long":["l","ɔ̃"],"lu":["l","y"],"lui":["l","y","i"],"mais":["m","ɛ"],"maison":["m","ɛ","z","ɔ̃"],"manger":["m","ɑ̃","ʒ","e"],"matin":["m","a","t","ɛ̃"],"merci":["m","ɛ","ʁ","s","i"],"mieux":["m","j","ø"],"monde":["m","ɔ̃","d"],"musique":["m","y","z","i","k"],"mère":["m","ɛ","ʁ"],"ne":["n","ə"],"neuf":["n","œ","f"],"nez":["n","e"],"nom":["n","ɔ̃"],"notre":["n","o","t","ʁ"],"nous":["n","u"],"nuit":["n","y","i"],"nôtre":["n","o","t","ʁ"],"pain":["p","ɛ̃"],"parler":["p","a","ʁ","l","e"],"petit":["p","ə","t","i"],"peu":["p","ø"],"peur":["p","œ","ʁ"],"plein":["p","l","ɛ̃"],"poison":["p","w","a","z","ɔ̃"],"poisson":["p","w","a","s","ɔ̃"],"porte":["p","ɔ","ʁ","t"],"premier":["p","ʁ","ə","m","j","e"],"professeur":["p","ʁ","o","f","ɛ","s","œ","ʁ"],"puis":["p","y","i"],"riche":["ʁ","i","ʃ"],"rose":["ʁ","ɔ","z"],"roue":["ʁ","u"],"rouge":["ʁ","u","ʒ"],"rue":["ʁ","y"],"réponse":["ʁ","e","p","ɔ̃","s"],"salut":["s","a","l","y"],"saule":["s","o","l"],"sol":["s","ɔ","l"],"souvent":["s","u","v","ɑ̃"],"suis":["s","y","i"],"sœur":["s","œ","ʁ"],"temps":["t","ɑ̃"],"toujours":["t","u","ʒ","u","ʁ"],"tout":["t","u"],"travail":["t","ʁ","a","v","a","j"],"très":["t","ʁ","ɛ"],"tu":["t","y"],"téléphone":["t","e","l","e","f","ɔ","n"],"vent":["v","ɑ̃"],"vin":["v","ɛ̃"],"voiture":["v","w","a","t","y","ʁ"],"vous":["v","u"],"voyage":["v","w","a","j","a","ʒ"],"vu":["v","y"],"zéro":["z","e","ʁ","o"],"école":["e","k","ɔ","l"],"était":["e","t","ɛ"],"étudier":["e","t","y","d","j","e"],"été":["e","t","e"]}};
+
+// Datos de ejemplo para el mockup: acierto promedio por sonido (saldría del historial)
+const PUNTAJE = {
+  en: { "θ": 32, "ð": 41, "ɹ": 48, "æ": 55, "ɪ": 58, "ʌ": 63, "ɜ": 69, "ə": 71, "v": 74, "ŋ": 77, "z": 80, "ʃ": 86, "i": 91 },
+  fr: { "y": 29, "ʁ": 37, "ɥ": 45, "ɛ̃": 52, "ø": 58, "ɔ̃": 66, "ə": 73, "u": 79, "ʒ": 84, "e": 90 },
+};
+// Lo que suele salir en lugar del sonido (hablante de español)
+const SONO = {
+  en: { "ɪ": "i", "i": "ɪ", "æ": "a", "ʌ": "a", "ɑ": "o", "ə": "a", "ʊ": "u", "ɜ": "e", "θ": "t", "ð": "d", "v": "b",
+        "z": "s", "ʃ": "tʃ", "dʒ": "ʝ", "ʒ": "ʝ", "h": "x", "ŋ": "n", "ɹ": "ɾ", "s": "es" },
+  fr: { "y": "u", "u": "y", "ø": "e", "œ": "e", "ə": "e", "e": "i", "ɛ": "e", "o": "ɔ", "ɔ": "o", "ɑ̃": "an", "ɔ̃": "on",
+        "ɛ̃": "en", "ʁ": "ɾ", "z": "s", "ʒ": "ʝ", "ʃ": "tʃ", "v": "b", "ɥ": "u" },
+};
+const BIEN = 0.35, CASI = 0.15;
+const VOZ = { en: "en-US", fr: "fr-FR" };
+const NOMBRE_IDIOMA = { en: "inglés", fr: "francés" };
+
+const $ = (s) => document.querySelector(s);
+const est = { lang: "en", leccion: null, tarjetas: [], i: 0, intentos: {}, grabando: false, micBloqueado: false, sinFin: false };
+
+function nivelDe(p) { return p == null ? null : p >= 85 ? "bien" : p >= 50 ? "casi" : "mal"; }
+function colorDe(nivel) { return nivel ? `var(--${nivel})` : "var(--capa-3)"; }
+
+// Más débiles primero; los que no has practicado van después de los flojos.
+function porTrabajar(lang) {
+  const p = PUNTAJE[lang];
+  return [...LECCIONES[lang]].sort((a, b) => (p[a.ipa] ?? 65) - (p[b.ipa] ?? 65));
+}
+
+function anunciar(texto) { $("#anuncio").textContent = texto; }
+
+let toastReloj;
+function toast(texto) {
+  const t = $("#toast");
+  t.textContent = texto;
+  t.classList.add("ver");
+  clearTimeout(toastReloj);
+  toastReloj = setTimeout(() => t.classList.remove("ver"), 2200);
+}
+
+/* ---------- Modo foco ---------- */
+
+function cargarLeccion(lec, eleccion) {
+  est.leccion = lec;
+  est.tarjetas = [
+    ...lec.palabras.map((p) => ({ texto: p, fonemas: IPA[est.lang][p] })),
+    { texto: lec.par.join(" · "), par: lec.par, fonemas: [...IPA[est.lang][lec.par[0]], "|", ...IPA[est.lang][lec.par[1]]] },
+  ];
+  est.i = 0;
+  est.intentos = {};
+
+  const foco = $("#foco");
+  foco.classList.add("cambiando");
+  setTimeout(() => {
+    const p = PUNTAJE[est.lang][lec.ipa];
+    $("#ceja").innerHTML = eleccion ? "Elegiste este sonido"
+      : p == null ? "Sonido nuevo" : `<i style="background:${colorDe(nivelDe(p))}"></i>Para trabajar · ${p} % de acierto`;
+    $("#glifo").textContent = lec.ipa;
+    $("#nombre").textContent = lec.nombre;
+    $("#simbolo").setAttribute("aria-label", `Sonido ${lec.ipa}, ${lec.nombre}. Ver cómo se hace`);
+    pintarTarjetas();
+    foco.classList.remove("cambiando");
+  }, 180);
+}
+
+function fichasHTML(fonemas, objetivo, resultado) {
+  return fonemas.map((f, k) => {
+    if (f === "|") return '<span class="corte" aria-hidden="true"></span>';
+    const r = resultado?.[k];
+    const extra = !r ? "" : r.nivel === "mal" ? `sonó ${r.sono}` : r.nivel === "casi" ? "casi" : "";
+    const etiqueta = !r ? f : `${f}: ${r.nivel === "mal" ? "mal, " + extra : r.nivel}`;
+    return `<span class="ficha${f === objetivo ? " objetivo" : ""}${r ? " entra" : ""}" ${r ? `data-nivel="${r.nivel}"` : ""}
+      style="transition-delay:${r ? k * 40 : 0}ms" role="listitem" aria-label="${etiqueta}"><b>${f}</b>${extra ? `<em class="ipa">${extra}</em>` : ""}</span>`;
+  }).join("");
+}
+
+function pintarTarjetas() {
+  const total = est.tarjetas.length;
+  $("#carrusel").innerHTML = est.tarjetas.map((t, k) => `
+    <article class="tarjeta${k === 0 ? " actual" : ""}" role="group" aria-roledescription="palabra" aria-label="${k + 1} de ${total}: ${t.texto}">
+      <small>${t.par ? "Par mínimo" : `Palabra ${k + 1} de ${total - 1}`}</small>
+      <h2 class="palabra" lang="${est.lang}">${t.par ? `${t.par[0]}<span class="sep">·</span>${t.par[1]}` : t.texto}</h2>
+      <div class="fichas" role="list" aria-label="Sonidos de la palabra">${fichasHTML(t.fonemas, est.leccion.ipa)}</div>
+      <p class="veredicto"></p>
+    </article>`).join("");
+  $("#puntos").innerHTML = est.tarjetas.map((_, k) => `<i class="${k === 0 ? "actual" : ""}"></i>`).join("");
+  $("#carrusel").scrollLeft = 0;
+  $("#pista").textContent = "Toca y di la palabra";
+}
+
+function marcarActual(i) {
+  if (i === est.i && document.querySelector(".tarjeta.actual")) return;
+  est.i = i;
+  document.querySelectorAll(".tarjeta").forEach((t, k) => t.classList.toggle("actual", k === i));
+  document.querySelectorAll(".puntos i").forEach((t, k) => t.classList.toggle("actual", k === i));
+  $("#pista").textContent = est.intentos[i] ? "Toca para intentar de nuevo" : "Toca y di la palabra";
+  anunciar(`Palabra ${i + 1} de ${est.tarjetas.length}: ${est.tarjetas[i].texto}`);
+}
+
+function irA(i) {
+  const c = $("#carrusel"), t = c.children[i];
+  if (!t) return;
+  c.scrollTo({ left: t.offsetLeft - c.offsetLeft - 30, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  marcarActual(i);
+}
+
+$("#carrusel").addEventListener("scroll", () => {
+  const c = $("#carrusel"), paso = c.children[0].offsetWidth + 10;
+  marcarActual(Math.round(c.scrollLeft / paso));
+}, { passive: true });
+
+$("#carrusel").addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") irA(Math.min(est.i + 1, est.tarjetas.length - 1));
+  if (e.key === "ArrowLeft") irA(Math.max(est.i - 1, 0));
+});
+
+function siguiente() {
+  if (est.i < est.tarjetas.length - 1) return irA(est.i + 1);
+  const orden = porTrabajar(est.lang);
+  const prox = orden[(orden.indexOf(est.leccion) + 1) % orden.length];
+  toast(`Siguiente sonido: ${prox.ipa}`);
+  cargarLeccion(prox);
+}
+
+/* ---------- Grabación y resultado (simulados) ---------- */
+
+const onda = $("#onda");
+onda.innerHTML = "<i></i>".repeat(28);
+let reloj, inicio;
+
+function grabar() {
+  if (est.grabando) return parar();
+  if (est.micBloqueado) return abrir("error");
+  est.grabando = true;
+  document.body.dataset.modo = "grabando";
+  $("#btn-grabar").setAttribute("aria-label", "Terminar grabación");
+  $("#btn-grabar").setAttribute("aria-pressed", "true");
+  anunciar("Grabando. Di la palabra y toca para terminar.");
+  if (navigator.userActivation?.hasBeenActive) navigator.vibrate?.(12);
+  inicio = Date.now();
+  reloj = setInterval(() => {
+    const s = (Date.now() - inicio) / 1000;
+    onda.querySelectorAll("i").forEach((b, k) => {
+      b.style.height = 4 + Math.abs(Math.sin(s * 7 + k * .7)) * Math.random() * 22 + "px";
+    });
+    if (s > 4 && !est.sinFin) parar();
+  }, 90);
+}
+
+function parar() {
+  clearInterval(reloj);
+  est.grabando = false;
+  est.sinFin = false;
+  $("#btn-grabar").setAttribute("aria-label", "Grabar");
+  $("#btn-grabar").setAttribute("aria-pressed", "false");
+  document.body.dataset.modo = "analizando";
+  const tarjeta = $("#carrusel").children[est.i];
+  tarjeta.classList.add("pensando");
+  setTimeout(() => {
+    tarjeta.classList.remove("pensando");
+    document.body.dataset.modo = "";
+    const n = est.intentos[est.i] || 0;
+    mostrarResultado(est.i, n);
+  }, 750);
+}
+
+// Puntaje falso: el sonido objetivo mejora con cada intento (mal → casi → bien).
+function evaluar(fonemas, objetivo, intento) {
+  return fonemas.map((f, k) => {
+    if (f === "|") return null;
+    let p = 0.7;
+    if (f === objetivo) p = [0.08, 0.24, 0.62][Math.min(intento, 2)];
+    else if (intento === 0 && k === fonemas.length - 1) p = 0.22;
+    const nivel = p >= BIEN ? "bien" : p >= CASI ? "casi" : "mal";
+    return { p, nivel, sono: SONO[est.lang][f] || "otro sonido" };
+  });
+}
+
+function mostrarResultado(i, intento) {
+  const t = est.tarjetas[i], obj = est.leccion.ipa;
+  const r = evaluar(t.fonemas, obj, intento);
+  const validos = r.filter(Boolean);
+  const acierto = Math.round(100 * validos.filter((x) => x.nivel === "bien").length / validos.length);
+  const enObj = r.find((x, k) => x && t.fonemas[k] === obj);
+  const como = est.leccion.como.split(". ")[0] + ".";
+
+  let texto;
+  if (validos.every((x) => x.nivel === "bien")) texto = "Suena natural. Pasa a la siguiente.";
+  else if (enObj?.nivel === "mal") texto = `La ${obj} sonó como ${enObj.sono}. ${como}`;
+  else if (enObj?.nivel === "casi") texto = `La ${obj} va cerca. ${como}`;
+  else texto = "Cuida el final de la palabra.";
+
+  const nivel = acierto >= 85 ? "bien" : acierto >= 50 ? "casi" : "mal";
+  const tarjeta = $("#carrusel").children[i];
+  tarjeta.querySelector(".fichas").innerHTML = fichasHTML(t.fonemas, obj, r);
+  const v = tarjeta.querySelector(".veredicto");
+  v.dataset.nivel = nivel;
+  v.innerHTML = `<strong>${acierto} %</strong>${texto}`;
+  requestAnimationFrame(() => requestAnimationFrame(() =>
+    tarjeta.querySelectorAll(".ficha.entra").forEach((f) => f.classList.remove("entra"))));
+
+  est.intentos[i] = intento + 1;
+  $("#pista").textContent = nivel === "bien" ? "Bien. Desliza para seguir" : "Toca para intentar de nuevo";
+  anunciar(`${acierto} por ciento. ${texto}`);
+}
+
+function escuchar(texto) {
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = VOZ[est.lang];
+    u.rate = .85;
+    speechSynthesis.speak(u);
+  } catch { toast("Este navegador no puede leer en voz alta"); }
+}
+
+/* ---------- Pantallas ---------- */
+
+function abrir(id) {
+  if (id === "sonidos") pintarSonidos();
+  if (id === "progreso") pintarProgreso();
+  if (id === "como") pintarComo();
+  const d = $(id === "como" ? "#hoja-como" : "#" + id);
+  if (!d.open) d.showModal();
+}
+
+document.querySelectorAll("dialog").forEach((d) => {
+  d.addEventListener("click", (e) => {
+    // Fondo oscuro solo en la hoja; en pantallas completas tocar el margen no cierra
+    if (e.target.closest("[data-cerrar]") || (e.target === d && d.classList.contains("hoja"))) d.close();
+  });
+});
+
+function fila(lec) {
+  const p = PUNTAJE[est.lang][lec.ipa], nivel = nivelDe(p);
+  return `<button class="fila" data-ipa="${lec.ipa}" aria-label="${lec.ipa}, ${lec.nombre}, ${p == null ? "sin practicar" : p + " por ciento"}">
+    <span class="tile ipa" lang="">${lec.ipa}</span>
+    <span><strong>${lec.nombre}</strong><span lang="${est.lang}">${lec.palabras.slice(0, 3).join(" · ")}</span></span>
+    <span class="nota-fila" style="color:${p == null ? "var(--texto-3)" : colorDe(nivel)}">${p == null ? "Nuevo" : p + " %"}
+      <span class="barrita"><i style="width:${p ?? 0}%;background:${colorDe(nivel)}"></i></span></span>
+  </button>`;
+}
+
+function pintarSonidos() {
+  const lista = porTrabajar(est.lang), p = PUNTAJE[est.lang];
+  const grupos = [
+    ["Por trabajar", lista.filter((l) => p[l.ipa] < 70)],
+    ["Van bien", lista.filter((l) => p[l.ipa] >= 70)],
+    ["Sin practicar", lista.filter((l) => p[l.ipa] == null)],
+  ];
+  $("#sonidos-idioma").textContent = `Sonidos del ${NOMBRE_IDIOMA[est.lang]}`;
+  $("#sonidos-resumen").textContent = `${lista.length} sonidos · ${grupos[0][1].length} por trabajar`;
+  $("#sonidos-grupos").innerHTML = grupos.filter((g) => g[1].length).map(([titulo, ls]) =>
+    `<section class="grupo"><h3>${titulo}</h3><div class="lista">${ls.map(fila).join("")}</div></section>`).join("");
+}
+
+function pintarProgreso() {
+  // 4 semanas de lunes a domingo; hoy es sábado (el último dato). 17 días practicados, racha de 6.
+  const dias = "110110011010100101100111111".split("");
+  $("#calendario").innerHTML = ["L", "M", "M", "J", "V", "S", "D"].map((d) => `<b aria-hidden="true">${d}</b>`).join("")
+    + dias.map((d, k) => `<i class="${d === "1" ? "si" : ""}${k === dias.length - 1 ? " hoy" : ""}"></i>`).join("")
+    + '<i style="opacity:.35"></i>';
+
+  const serie = est.lang === "en" ? [42, 50, 38, 55, 61, 58, 64, 60, 71, 68, 75, 72] : [30, 35, 41, 38, 44, 52, 49, 55, 58, 54, 61, 63];
+  const prom = Math.round(serie.slice(-6).reduce((a, b) => a + b) / 6);
+  const antes = Math.round(serie.slice(0, 6).reduce((a, b) => a + b) / 6);
+  $("#promedio").innerHTML = `${prom} %<small>promedio reciente</small>`;
+  $("#tendencia").textContent = `+${prom - antes} puntos frente a la semana pasada`;
+  const x = (k) => 6 + k * (288 / (serie.length - 1)), y = (v) => 58 - (v - 20) * 0.75;
+  const d = serie.map((v, k) => `${k ? "L" : "M"}${x(k).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
+  $("#linea").innerHTML = `<path d="${d} L294 64 L6 64Z" fill="rgba(143,160,255,.08)"/>
+    <path d="${d}" fill="none" stroke="var(--acento)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${x(serie.length - 1)}" cy="${y(serie.at(-1))}" r="4" fill="var(--acento)"/>`;
+
+  const flojos = porTrabajar(est.lang).filter((l) => PUNTAJE[est.lang][l.ipa] != null).slice(0, 3);
+  $("#trabajar").innerHTML = flojos.map(fila).join("");
+}
+
+function pintarComo() {
+  const l = est.leccion;
+  $("#como-titulo").innerHTML = `<span class="ipa">${l.ipa}</span> <span style="color:var(--texto-2);font-weight:500">${l.nombre}</span>`;
+  $("#como-texto").textContent = l.como;
+  $("#como-trampa").textContent = l.trampa;
+  $("#como-par").innerHTML = l.par.map((p) => `<button data-decir="${p}" lang="${est.lang}" aria-label="Escuchar ${p}">${p}
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--acento)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6"/></svg></button>`).join("");
+}
+
+// Elegir un sonido desde las listas
+document.addEventListener("click", (e) => {
+  const f = e.target.closest(".fila");
+  if (f) {
+    const lec = LECCIONES[est.lang].find((l) => l.ipa === f.dataset.ipa);
+    f.closest("dialog").close();
+    $("#progreso").open && $("#progreso").close();
+    cargarLeccion(lec, true);
+  }
+  const d = e.target.closest("[data-decir]");
+  if (d) escuchar(d.dataset.decir);
+});
+
+/* ---------- Primera vez: descarga simulada ---------- */
+
+let descarga;
+function simularDescarga() {
+  const total = 302, arco = $("#carga-arco"), barra = $("#carga-barra");
+  const glifos = ["θ", "ɪ", "ʁ", "ɥ", "ɑ̃", "ð", "ʃ", "ŋ"];
+  let mb = 0, k = 0;
+  $("#carga-listo").hidden = true;
+  $("#carga-ver").hidden = false;
+  $("#carga-titulo").textContent = "Preparando el oído de la app";
+  clearInterval(descarga);
+  descarga = setInterval(() => {
+    mb = Math.min(total, mb + 2 + Math.random() * 5);
+    const f = mb / total;
+    arco.style.strokeDashoffset = 351.9 * (1 - f);
+    barra.firstElementChild.style.width = f * 100 + "%";
+    barra.setAttribute("aria-valuenow", Math.round(mb));
+    const quedan = Math.ceil((total - mb) / 30);
+    $("#carga-medidor").textContent = mb < total ? `${Math.round(mb)} de ${total} MB · quedan ${quedan} s` : "Descarga completa";
+    if (++k % 8 === 0) $("#carga-glifo").textContent = glifos[(k / 8) % glifos.length];
+    if (mb >= total) {
+      clearInterval(descarga);
+      $("#carga-titulo").textContent = "Listo, ya puedes practicar";
+      $("#carga-texto").textContent = "El modelo quedó guardado en este teléfono. Desde ahora funciona sin internet.";
+      $("#carga-aviso").textContent = "";
+      $("#carga-glifo").textContent = "✓";
+      $("#carga-listo").hidden = false;
+      $("#carga-ver").hidden = true;
+      $("#carga-listo").focus();
+    }
+    if (!$("#carga").open) clearInterval(descarga);
+  }, 100);
+}
+$("#carga").addEventListener("cancel", (e) => { if ($("#carga-listo").hidden) e.preventDefault(); });
+$("#carga-listo").onclick = () => $("#carga").close();
+$("#carga-ver").onclick = () => abrir("sonidos");
+
+$("#error-reintentar").onclick = () => {
+  est.micBloqueado = false;
+  $("#error").close();
+  toast("Micrófono listo");
+};
+
+/* ---------- Eventos ---------- */
+
+$("#btn-grabar").onclick = grabar;
+$("#btn-siguiente").onclick = siguiente;
+$("#btn-escuchar").onclick = () => escuchar(est.tarjetas[est.i].par ? est.tarjetas[est.i].par.join(", ") : est.tarjetas[est.i].texto);
+$("#btn-sonidos").onclick = () => abrir("sonidos");
+$("#btn-progreso").onclick = () => abrir("progreso");
+$("#btn-como").onclick = $("#simbolo").onclick = () => abrir("como");
+
+function cambiarIdioma(lang) {
+  if (lang === est.lang) return;
+  est.lang = lang;
+  $("#idioma").dataset.lang = lang;
+  document.querySelectorAll("#idioma button").forEach((b) => {
+    const si = b.dataset.lang === lang;
+    b.setAttribute("aria-checked", si);
+    b.tabIndex = si ? 0 : -1;
+  });
+  cargarLeccion(porTrabajar(lang)[0]);
+}
+$("#idioma").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) cambiarIdioma(b.dataset.lang); });
+$("#idioma").addEventListener("keydown", (e) => {
+  if (!["ArrowLeft", "ArrowRight"].includes(e.key)) return;
+  const otro = est.lang === "en" ? "fr" : "en";
+  cambiarIdioma(otro);
+  $(`#idioma [data-lang="${otro}"]`).focus();
+});
+
+/* ---------- Estados del mockup ---------- */
+
+function demo(nombre) {
+  document.querySelectorAll("dialog[open]").forEach((d) => d.close());
+  if (est.grabando) { clearInterval(reloj); est.grabando = false; document.body.dataset.modo = ""; }
+  est.micBloqueado = nombre === "error";
+  const ir = () => {
+    if (nombre === "grabando") { est.sinFin = true; grabar(); }
+    if (["mal", "casi", "bien"].includes(nombre)) mostrarResultado(est.i, ["mal", "casi", "bien"].indexOf(nombre));
+    if (nombre === "carga") { abrir("carga"); simularDescarga(); }
+    if (nombre === "error") grabar();
+    if (nombre === "sonidos" || nombre === "progreso") abrir(nombre);
+  };
+  if (nombre === "inicio" || !est.leccion) { cargarLeccion(porTrabajar(est.lang)[0]); setTimeout(ir, 220); }
+  else ir();
+}
+document.querySelectorAll("[data-demo]").forEach((b) => b.onclick = () => {
+  b.closest("details").open = false;
+  demo(b.dataset.demo);
+});
+
+demo(location.hash.slice(1) || "inicio");
+</script>
+</body>
+</html>

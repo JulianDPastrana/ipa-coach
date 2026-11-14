@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0C">
+<title>IPA Coach · Diseño A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Noto Sans 500 recortada a los símbolos IPA de las lecciones (≈10 KB). */
+@font-face { font-family: "Noto IPA"; font-weight: 500; font-display: block; src: url(data:font/woff2;base64,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) format("woff2"); }
+:root {
+  color-scheme: dark;
+  --fondo: #0B0B0C;
+  --sup: #151517;
+  --sup2: #1E1E21;
+  --linea: #2C2C31;
+  --texto: #F4F4F5;
+  --texto2: #ABABB3;
+  --texto3: #8E8E97;
+  --acento: #97A3FF;
+  --acento-suave: rgba(151, 163, 255, .14);
+  --sobre-acento: #0B0B0C;
+  --bien: #52D98E;
+  --casi: #F2BA55;
+  --mal: #FF7D74;
+  --radio: 22px;
+  --radio-s: 14px;
+  --sombra: 0 1px 0 rgba(255,255,255,.04) inset, 0 12px 32px rgba(0,0,0,.35);
+  --suave: cubic-bezier(.2, .7, .2, 1);
+  --fuente: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fuente-ipa: "Noto IPA", "Noto Sans", Roboto, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; margin: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--fondo); color: var(--texto);
+  font: 400 16px/1.5 var(--fuente); letter-spacing: -.005em;
+  -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+}
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--acento); outline-offset: 3px; border-radius: 10px; }
+[hidden] { display: none !important; }
+.ipa { font-family: var(--fuente-ipa); font-weight: 500; letter-spacing: 0; }
+.oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.app { max-width: 440px; margin: 0 auto; min-height: 100dvh; padding: 0 20px calc(110px + env(safe-area-inset-bottom)); }
+.vista { animation: entrar .35s var(--suave); }
+@keyframes entrar { from { opacity: 0; transform: translateY(8px); } }
+
+/* Barra superior */
+.barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 0 8px; }
+.marca { font-weight: 600; font-size: 15px; color: var(--texto2); display: flex; align-items: center; gap: 8px; }
+.marca i { width: 8px; height: 8px; border-radius: 50%; background: var(--acento); }
+.idioma { display: flex; background: var(--sup); border: 1px solid var(--linea); border-radius: 999px; padding: 3px; }
+.idioma button { padding: 6px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--texto2); min-height: 36px; transition: background .2s, color .2s; }
+.idioma button[aria-pressed="true"] { background: var(--sup2); color: var(--texto); box-shadow: 0 1px 2px rgba(0,0,0,.4); }
+
+h1 { font-size: 34px; line-height: 1.1; font-weight: 700; letter-spacing: -.03em; margin: 18px 0 6px; }
+.sub { color: var(--texto2); font-size: 15px; }
+h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--texto3); margin: 34px 0 12px; display: flex; justify-content: space-between; }
+h2 span { text-transform: none; letter-spacing: 0; font-weight: 500; }
+
+/* Aviso de descarga del modelo */
+.aviso { margin-top: 18px; width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; background: var(--sup); border: 1px solid var(--linea); border-radius: var(--radio-s); padding: 12px 14px; font-size: 14px; color: var(--texto2); }
+.aviso b { color: var(--texto); font-weight: 500; display: block; }
+.aviso .mini { flex: 0 0 34px; }
+.anillo { transform: rotate(-90deg); }
+.anillo circle { fill: none; stroke-width: 3.5; }
+.anillo .pista { stroke: var(--linea); }
+.anillo .valor { stroke: var(--acento); stroke-linecap: round; transition: stroke-dashoffset .4s var(--suave); }
+
+/* Tarjetas */
+.tarjeta { background: var(--sup); border: 1px solid var(--linea); border-radius: var(--radio); padding: 22px; box-shadow: var(--sombra); }
+.heroe { position: relative; overflow: hidden; margin-top: 22px; padding: 24px 22px 22px; }
+.heroe::before { content: ""; position: absolute; inset: -40% -30% auto auto; width: 260px; height: 260px; background: radial-gradient(circle, rgba(151,163,255,.22), transparent 65%); pointer-events: none; }
+.etiqueta { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--acento); }
+.heroe .glifo { font-size: 112px; line-height: 1; margin: 14px 0 10px; letter-spacing: -.02em; }
+.heroe h3 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.heroe p { color: var(--texto2); margin-top: 6px; font-size: 15px; }
+.palabritas { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.palabritas span { font-size: 13px; color: var(--texto2); background: var(--sup2); border-radius: 999px; padding: 4px 10px; }
+
+.boton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 22px; border-radius: 999px; font-weight: 600; font-size: 16px; transition: transform .15s var(--suave), background .2s; }
+.boton:active { transform: scale(.97); }
+.boton.primario { background: var(--acento); color: var(--sobre-acento); }
+.boton.secundario { background: var(--sup2); color: var(--texto); border: 1px solid var(--linea); }
+.heroe .boton { margin-top: 20px; width: 100%; }
+
+/* Rejilla de sonidos */
+.rejilla { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.losa { position: relative; background: var(--sup); border: 1px solid var(--linea); border-radius: 18px; padding: 14px 12px 12px; text-align: left; min-height: 104px; display: flex; flex-direction: column; transition: transform .15s var(--suave), border-color .2s, background .2s; }
+.losa:hover { border-color: #3a3a40; background: #18181b; }
+.losa:active { transform: scale(.97); }
+.losa .ipa { font-size: 34px; line-height: 1.1; }
+.losa small { color: var(--texto2); font-size: 13px; margin-top: auto; }
+.losa .barrita { height: 3px; border-radius: 3px; background: var(--linea); margin-top: 8px; overflow: hidden; }
+.losa .barrita i { display: block; height: 100%; background: var(--acento); border-radius: 3px; }
+.losa .punto { position: absolute; top: 12px; right: 12px; width: 7px; height: 7px; border-radius: 50%; background: var(--casi); }
+
+/* Lista de referencia (Sonidos) */
+.filtro { display: flex; gap: 8px; margin-top: 18px; }
+.filtro button { padding: 8px 14px; min-height: 40px; border-radius: 999px; border: 1px solid var(--linea); color: var(--texto2); font-size: 14px; font-weight: 500; }
+.filtro button[aria-pressed="true"] { background: var(--texto); color: var(--fondo); border-color: var(--texto); }
+.fila { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; padding: 14px 0; border-bottom: 1px solid var(--linea); }
+.fila .ipa { font-size: 28px; width: 52px; flex: none; text-align: center; }
+.fila div { flex: 1; min-width: 0; }
+.fila b { font-weight: 500; display: block; }
+.fila p { color: var(--texto2); font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.fila svg { flex: none; color: var(--texto3); }
+
+/* Progreso */
+.cifras { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
+.cifra { padding: 18px; }
+.cifra .num { font-size: 40px; font-weight: 700; letter-spacing: -.04em; line-height: 1.05; }
+.cifra .num small { font-size: 18px; color: var(--texto2); font-weight: 500; margin-left: 2px; }
+.cifra p { color: var(--texto2); font-size: 14px; }
+.semana { display: flex; justify-content: space-between; margin-top: 16px; }
+.dia { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; color: var(--texto3); }
+.dia i { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--linea); display: grid; place-items: center; }
+.dia.hecho i { background: var(--acento-suave); border-color: transparent; }
+.dia.hecho i::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--acento); }
+.dia.hoy { color: var(--texto); font-weight: 600; }
+.dia.hoy i { border-color: var(--acento); }
+.linea-grafica { width: 100%; height: 72px; margin-top: 14px; display: block; }
+.trabajar .fila .ipa { color: var(--texto); }
+.medidor { height: 4px; border-radius: 4px; background: var(--linea); margin-top: 8px; overflow: hidden; }
+.medidor i { display: block; height: 100%; background: var(--casi); border-radius: 4px; }
+.dominados { display: flex; flex-wrap: wrap; gap: 8px; }
+.dominados span { font-size: 18px; padding: 6px 12px; border-radius: 12px; background: rgba(82,217,142,.1); color: var(--bien); }
+
+/* Barra de pestañas */
+.pestanas { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: min(100%, 440px); display: grid; grid-template-columns: repeat(3, 1fr); padding: 8px 12px calc(10px + env(safe-area-inset-bottom)); background: rgba(11,11,12,.82); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); border-top: 1px solid var(--linea); z-index: 10; }
+.pestanas button { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 0; min-height: 56px; font-size: 12px; font-weight: 500; color: var(--texto3); border-radius: 14px; transition: color .2s; }
+.pestanas button[aria-current="page"] { color: var(--texto); }
+.pestanas button[aria-current="page"] svg { color: var(--acento); }
+
+/* Lección */
+.cabecera { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 12px; padding: 14px 0; margin: 0 -20px; padding-inline: 20px; background: linear-gradient(var(--fondo) 70%, transparent); }
+.redondo { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--sup); border: 1px solid var(--linea); flex: none; transition: transform .15s var(--suave); }
+.redondo:active { transform: scale(.94); }
+.cabecera .titulo { font-weight: 600; font-size: 16px; }
+.cabecera .titulo small { display: block; color: var(--texto3); font-weight: 400; font-size: 13px; }
+.leccion-glifo { font-size: 96px; line-height: 1; margin: 6px 0 4px; }
+.paso { margin-top: 30px; }
+#vista-leccion { padding-bottom: 80px; } /* el dock (hasta 181 px grabando) no tapa el par mínimo */
+.paso h2 { margin-top: 0; }
+.como { font-size: 18px; line-height: 1.55; }
+.ojo { margin-top: 14px; display: flex; gap: 10px; padding: 14px 16px; border-radius: var(--radio-s); background: rgba(242,186,85,.08); color: #F6D9A2; font-size: 15px; }
+.ojo b { color: var(--casi); font-weight: 600; }
+.ojo svg { color: var(--casi); margin-top: 2px; }
+.palabras { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px; margin: 0 -2px; }
+.palabras button { flex: none; min-height: 44px; padding: 0 18px; border-radius: 999px; background: var(--sup); border: 1px solid var(--linea); color: var(--texto2); font-weight: 500; transition: all .2s; }
+.palabras button[aria-pressed="true"] { background: var(--acento-suave); border-color: var(--acento); color: var(--texto); }
+.practica { margin-top: 14px; text-align: center; padding: 28px 22px; }
+.practica .palabra { font-size: 44px; font-weight: 700; letter-spacing: -.035em; line-height: 1.1; }
+.practica .objetivo { font-size: 22px; color: var(--texto2); margin-top: 6px; }
+.practica .objetivo mark { background: none; color: var(--acento); }
+.practica .redondo { margin: 16px auto 0; width: auto; padding: 0 18px; border-radius: 999px; display: inline-flex; gap: 8px; min-height: 44px; font-weight: 500; font-size: 15px; }
+
+/* Resultado */
+.resultado { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--linea); text-align: left; }
+.nota { display: flex; align-items: baseline; gap: 10px; }
+.nota .num { font-size: 40px; font-weight: 700; letter-spacing: -.04em; }
+.nota p { color: var(--texto2); font-size: 15px; }
+.fichas { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.ficha { min-width: 64px; padding: 10px 12px 8px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 2px; border: 1px solid; animation: ficha .4s var(--suave) backwards; }
+.ficha > .ipa { font-size: 28px; line-height: 1.15; }
+.ficha small { font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 3px; white-space: nowrap; }
+.ficha.bien { color: var(--bien); background: rgba(82,217,142,.09); border-color: rgba(82,217,142,.3); }
+.ficha.casi { color: var(--casi); background: rgba(242,186,85,.09); border-color: rgba(242,186,85,.32); }
+.ficha.mal { color: var(--mal); background: rgba(255,125,116,.09); border-color: rgba(255,125,116,.34); }
+@keyframes ficha { from { opacity: 0; transform: translateY(6px) scale(.96); } }
+.oido { margin-top: 14px; color: var(--texto2); font-size: 14px; }
+.oido .ipa { color: var(--texto); }
+.consejo { margin-top: 12px; font-size: 15px; color: var(--texto); }
+.acciones { display: flex; gap: 8px; margin-top: 18px; }
+.acciones .boton { flex: 1; padding: 0 14px; font-size: 15px; }
+.leyenda { display: flex; gap: 14px; margin-top: 16px; font-size: 12px; color: var(--texto3); }
+.leyenda i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+.esqueleto { display: flex; gap: 8px; margin-top: 14px; }
+.esqueleto i { width: 64px; height: 62px; border-radius: 16px; background: linear-gradient(90deg, var(--sup2), #26262a, var(--sup2)); background-size: 200% 100%; animation: brillo 1.1s linear infinite; }
+@keyframes brillo { to { background-position: -200% 0; } }
+
+.par { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.par button { background: var(--sup); border: 1px solid var(--linea); border-radius: 18px; padding: 18px 14px; text-align: left; transition: border-color .2s; }
+.par button:hover { border-color: #3a3a40; }
+.par b { font-size: 22px; font-weight: 600; letter-spacing: -.02em; display: block; }
+.par .ipa { color: var(--texto2); font-size: 17px; }
+.par small { display: flex; align-items: center; gap: 6px; color: var(--texto3); margin-top: 10px; font-size: 13px; }
+
+/* Error de micrófono */
+.error { margin-top: 22px; padding: 20px; text-align: left; border-radius: 18px; background: rgba(255,125,116,.06); border: 1px solid rgba(255,125,116,.28); }
+.error .icono { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: rgba(255,125,116,.12); color: var(--mal); }
+.error h3 { font-size: 19px; font-weight: 600; margin-top: 14px; letter-spacing: -.01em; }
+.error p { color: var(--texto2); margin-top: 6px; font-size: 15px; }
+.error ol { margin: 14px 0 0; padding-left: 20px; color: var(--texto); font-size: 15px; display: grid; gap: 6px; }
+.error .boton { margin-top: 18px; width: 100%; }
+
+/* Dock de grabación */
+.dock { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: min(100%, 440px); padding: 14px 20px calc(18px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; gap: 10px; background: linear-gradient(transparent, var(--fondo) 38%); z-index: 10; }
+.dock p { font-size: 14px; color: var(--texto2); min-height: 21px; font-variant-numeric: tabular-nums; }
+.grabar { position: relative; width: 80px; height: 80px; border-radius: 50%; background: var(--acento); color: var(--sobre-acento); display: grid; place-items: center; box-shadow: 0 10px 30px rgba(151,163,255,.28); transition: transform .2s var(--suave), background .2s; }
+.grabar:active { transform: scale(.94); }
+.grabar::before { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 2px solid var(--acento); opacity: 0; }
+.grabar[data-estado="grabando"]::before { animation: pulso 1.4s var(--suave) infinite; }
+.grabar[data-estado="analizando"] { background: var(--sup2); color: var(--texto2); box-shadow: none; }
+.grabar[disabled] { cursor: default; }
+@keyframes pulso { from { opacity: .7; transform: scale(.92); } to { opacity: 0; transform: scale(1.25); } }
+.ondas { display: flex; align-items: center; gap: 3px; height: 28px; }
+.ondas i { width: 3px; height: 4px; border-radius: 2px; background: var(--acento); transition: height .09s linear; }
+
+/* Hoja del modelo */
+.velo { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 20; display: flex; align-items: flex-end; justify-content: center; animation: aparecer .25s ease; }
+@keyframes aparecer { from { opacity: 0; } }
+.hoja { width: min(100%, 440px); background: var(--sup); border: 1px solid var(--linea); border-bottom: 0; border-radius: 28px 28px 0 0; padding: 12px 24px calc(24px + env(safe-area-inset-bottom)); animation: subir .35s var(--suave); }
+@keyframes subir { from { transform: translateY(40px); opacity: 0; } }
+.agarre { width: 40px; height: 5px; border-radius: 3px; background: var(--linea); margin: 0 auto 20px; }
+.hoja h3 { font-size: 24px; font-weight: 700; letter-spacing: -.025em; line-height: 1.2; margin-top: 14px; }
+.hoja > p { color: var(--texto2); margin-top: 10px; font-size: 15px; }
+.puntos { list-style: none; padding: 0; margin-top: 18px; display: grid; gap: 12px; font-size: 15px; }
+.puntos li { display: flex; gap: 12px; align-items: flex-start; }
+.puntos svg { flex: none; color: var(--acento); margin-top: 2px; }
+.barra-carga { height: 8px; border-radius: 8px; background: var(--sup2); margin-top: 22px; overflow: hidden; }
+.barra-carga i { display: block; height: 100%; width: 0; background: var(--acento); border-radius: 8px; transition: width .4s var(--suave); }
+.carga-texto { display: flex; justify-content: space-between; font-size: 13px; color: var(--texto2); margin-top: 8px; font-variant-numeric: tabular-nums; }
+.hoja .boton { width: 100%; margin-top: 20px; }
+
+/* Panel de estados (solo prototipo) */
+.demo { position: relative; max-width: 440px; margin: 10px auto 0; padding: 0 20px; z-index: 30; font-size: 13px; display: flex; justify-content: flex-end; }
+.demo summary { display: inline-block; list-style: none; cursor: pointer; padding: 6px 12px; border-radius: 999px; background: #25252a; color: var(--texto2); border: 1px dashed #4a4a52; }
+.demo summary::-webkit-details-marker { display: none; }
+.demo div { position: absolute; right: 20px; top: 38px; width: 230px; background: #1b1b1e; border: 1px solid var(--linea); border-radius: 14px; padding: 6px; box-shadow: var(--sombra); display: grid; }
+.demo button { text-align: left; padding: 10px 12px; border-radius: 10px; color: var(--texto); }
+.demo button:hover { background: var(--sup2); }
+
+.toast { position: fixed; left: 50%; bottom: 150px; transform: translateX(-50%); background: var(--texto); color: var(--fondo); padding: 10px 16px; border-radius: 12px; font-size: 14px; font-weight: 500; z-index: 40; animation: aparecer .2s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+@media (min-width: 900px) {
+  .demo { position: fixed; top: 16px; right: 16px; margin: 0; padding: 0; }
+  .demo div { right: 0; }
+}
+</style>
+</head>
+<body>
+<details class="demo" id="demo">
+  <summary>Estados del prototipo</summary>
+  <div>
+    <button data-demo="modelo">Primera vez: descarga del modelo</button>
+    <button data-demo="grabando">Grabando</button>
+    <button data-demo="mixto">Resultado: mixto</button>
+    <button data-demo="bien">Resultado: todo bien</button>
+    <button data-demo="mal">Resultado: a repetir</button>
+    <button data-demo="mic">Micrófono bloqueado</button>
+  </div>
+</details>
+<div class="app" id="app"></div>
+
+<nav class="pestanas" id="pestanas" aria-label="Secciones">
+  <button data-ir="practicar"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/></svg>Practicar</button>
+  <button data-ir="sonidos"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></svg>Sonidos</button>
+  <button data-ir="progreso"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19h16M6 15l4-4 3 3 5-6"/></svg>Progreso</button>
+</nav>
+
+
+
+<div id="capa"></div>
+<p class="oculto" aria-live="polite" id="anuncio"></p>
+
+<script>
+const DATOS = {"lecciones":{"en":[{"ipa":"ɪ","nombre":"i corta (ship)","como":"Lengua un poco más baja y relajada que en la i española. Boca casi neutra, sin sonreír. Es corta.","trampa":"Si la dices como i española, ship suena a sheep.","palabras":["ship","live","it","bit","fill","minute"],"par":["ship","sheep"]},{"ipa":"i","nombre":"i larga (sheep)","como":"Labios estirados como sonriendo, lengua alta y tensa. Alárgala un poco.","trampa":"Es parecida a la i española pero más larga y tensa.","palabras":["sheep","leave","eat","beat","feel","team"],"par":["leave","live"]},{"ipa":"æ","nombre":"a abierta (cat)","como":"Abre mucho la mandíbula y estira los labios hacia los lados, entre una a y una e.","trampa":"Los hispanohablantes la dicen como a normal: cat y cut suenan igual.","palabras":["cat","bad","man","happy","black","plan"],"par":["bad","bed"]},{"ipa":"ʌ","nombre":"a corta (cut)","como":"Boca medio abierta y relajada, lengua al centro. Como una a española corta y apagada.","trampa":"No la redondees como o: but no es bot.","palabras":["cut","but","love","money","up","trouble"],"par":["cut","cat"]},{"ipa":"ɑ","nombre":"a de garganta (hot)","como":"Abre bien la boca y baja la lengua hacia atrás, como cuando el médico te pide decir aaa.","trampa":"En inglés americano hot y lot se dicen con a, no con o.","palabras":["hot","stop","father","job","body","not"],"par":["cot","cut"]},{"ipa":"ə","nombre":"schwa (about)","como":"Todo relajado: boca entreabierta, lengua quieta en el centro. Es un sonido débil y corto, como un eh perezoso.","trampa":"Es la vocal más común del inglés. Las sílabas sin acento casi siempre se reducen a schwa, no se leen como se escriben.","palabras":["about","problem","data","banana","support","today"],"par":["support","sport"]},{"ipa":"ʊ","nombre":"u corta (full)","como":"Labios poco redondeados y lengua relajada. Más corta y floja que la u española.","trampa":"Si la dices como u española, full suena a fool.","palabras":["full","book","good","put","look","could"],"par":["full","fool"]},{"ipa":"ɜ","nombre":"vocal de bird (con r)","como":"Labios neutros, lengua al centro y la punta doblada hacia atrás sin tocar nada, todo en un solo sonido.","trampa":"No digas ber-d con e más r: es una sola vocal con color de r.","palabras":["bird","work","learn","first","word","research"],"par":["work","walk"]},{"ipa":"θ","nombre":"th sorda (think)","como":"Punta de la lengua entre los dientes y sopla aire sin voz. Es la z de España.","trampa":"No la cambies por t ni s: think no es tink ni sink.","palabras":["think","three","thought","method","both","growth"],"par":["think","sink"]},{"ipa":"ð","nombre":"th sonora (this)","como":"Igual que θ, lengua entre los dientes, pero haciendo vibrar las cuerdas vocales. Parecida a la d suave de 'nada'.","trampa":"No la digas como una d dura: this no es dis.","palabras":["this","the","other","whether","father","though"],"par":["they","day"]},{"ipa":"v","nombre":"v de dientes","como":"Dientes de arriba sobre el labio de abajo, con voz. Debe sentirse un zumbido en el labio.","trampa":"En español b y v suenan igual; en inglés vest y best son palabras distintas.","palabras":["very","value","level","have","over","improve"],"par":["vest","best"]},{"ipa":"z","nombre":"s sonora (zoo)","como":"Como una s pero con voz: zumba como una abeja. Pon la mano en la garganta y siente la vibración.","trampa":"Muchas s escritas suenan z: is, was, easy, reason.","palabras":["zoo","is","was","easy","reason","busy"],"par":["zip","sip"]},{"ipa":"ʃ","nombre":"sh (she)","como":"Labios hacia adelante en forma de trompa, lengua un poco atrás, sopla sin voz: el sonido de pedir silencio.","trampa":"No la cambies por ch: share no es chair.","palabras":["she","share","machine","nation","issue","sure"],"par":["share","chair"]},{"ipa":"dʒ","nombre":"j inglesa (job)","como":"Empieza como una d y suéltala en una sh con voz. Labios un poco hacia adelante.","trampa":"No es la j española (jota) ni la y: job no es yob.","palabras":["job","just","change","large","project","manager"],"par":["jet","yet"]},{"ipa":"ʒ","nombre":"zh (vision)","como":"La sh pero con voz. Como la ll argentina de 'yo'.","trampa":"Suele escribirse s: vision, usual, decision.","palabras":["vision","usual","decision","measure","pleasure","casual"],"par":["vision","fission"]},{"ipa":"h","nombre":"h de aire (hat)","como":"Solo aire suave saliendo de la garganta, como empañar un vidrio. Sin roce.","trampa":"La jota española raspa demasiado. Y no te la comas: hat no es at.","palabras":["hat","help","how","behind","huge","hold"],"par":["hold","old"]},{"ipa":"ŋ","nombre":"ng (sing)","como":"La parte de atrás de la lengua toca el paladar blando y el aire sale por la nariz. No suena la g al final.","trampa":"No agregues una g o una k: thing no es thingk.","palabras":["sing","thing","long","working","language","think"],"par":["sin","sing"]},{"ipa":"ɹ","nombre":"r inglesa (red)","como":"La lengua no toca nada: la punta se curva hacia atrás y los labios se redondean un poco. Cero vibración.","trampa":"No la vibres ni la golpees como la r española.","palabras":["red","right","run","really","problem","around"],"par":["right","light"]},{"ipa":"l","nombre":"l oscura (feel)","como":"Al final de sílaba, la punta toca detrás de los dientes y la parte de atrás de la lengua sube. Suena más oscura, casi como una u.","trampa":"La l española es clara; en feel, full o model la l es pesada.","palabras":["feel","full","model","people","skill","will"],"par":["feel","fill"]},{"ipa":"s","nombre":"s inicial sin e (study)","como":"Empieza directo con la s, sin vocal antes. Alarga la s un instante y pasa a la consonante.","trampa":"No digas estudy, espeak ni eschool.","palabras":["study","speak","school","state","skill","spring"],"par":["state","estate"]}],"fr":[{"ipa":"y","nombre":"u francesa (tu)","como":"Pon la lengua como para decir i y redondea los labios como para decir u. Mantén la lengua adelante.","trampa":"Si la dices como u española, tu (tú) suena a tout (todo).","palabras":["tu","rue","vu","salut","musique","étudier"],"par":["tu","tout"]},{"ipa":"u","nombre":"ou (tout)","como":"Como la u española, labios bien redondeados hacia adelante.","trampa":"Se escribe ou: no la confundas con la u francesa.","palabras":["tout","nous","vous","jour","toujours","souvent"],"par":["roue","rue"]},{"ipa":"ø","nombre":"eu cerrada (deux)","como":"Lengua como para decir e, labios redondeados como para decir o. Boca poco abierta.","trampa":"No la digas como e ni como o.","palabras":["deux","peu","jeu","bleu","heureux","mieux"],"par":["deux","doux"]},{"ipa":"œ","nombre":"eu abierta (peur)","como":"Como ø pero con la boca más abierta. Suele aparecer antes de una consonante que se pronuncia.","trampa":"Es frecuente en -eur: professeur, heure, sœur.","palabras":["peur","heure","sœur","jeune","neuf","professeur"],"par":["jeune","jeûne"]},{"ipa":"ə","nombre":"e muda (je)","como":"Labios ligeramente redondeados, sonido corto y relajado. A menudo desaparece al hablar rápido.","trampa":"No la digas como e española clara: je no es ye ni che.","palabras":["je","le","ne","petit","demain","premier"],"par":["le","les"]},{"ipa":"e","nombre":"é cerrada (été)","como":"Labios estirados y boca casi cerrada. Más tensa y cerrada que la e española.","trampa":"Se escribe é, -er, -ez: parler, parlez.","palabras":["été","café","parler","nez","les","aller"],"par":["été","était"]},{"ipa":"ɛ","nombre":"è abierta (mère)","como":"Boca más abierta que en é, mandíbula baja.","trampa":"Se escribe è, ê, ai: mère, fête, mais.","palabras":["mère","fête","mais","lait","très","elle"],"par":["fait","fée"]},{"ipa":"o","nombre":"o cerrada (beau)","como":"Labios muy redondeados y boca casi cerrada, como un beso.","trampa":"Se escribe au, eau, ô.","palabras":["beau","eau","chaud","côté","faux","hôtel"],"par":["saule","sol"]},{"ipa":"ɔ","nombre":"o abierta (porte)","como":"Boca más abierta que en la o cerrada y labios menos redondeados.","trampa":"Suele ir antes de consonante pronunciada: porte, homme.","palabras":["porte","homme","bonne","école","téléphone","notre"],"par":["notre","nôtre"]},{"ipa":"ɑ̃","nombre":"nasal an (enfant)","como":"Boca abierta como en a y el aire sale a la vez por la boca y la nariz. No cierres con n ni m.","trampa":"No digas 'an' con n al final: la n escrita no se pronuncia.","palabras":["enfant","temps","dans","grand","France","lent"],"par":["lent","long"]},{"ipa":"ɔ̃","nombre":"nasal on (bon)","como":"Labios redondeados como en o y aire por la nariz. Sin n final.","trampa":"bon y bonne son distintos: en bonne sí suena la n y la vocal no es nasal.","palabras":["bon","nom","maison","monde","long","réponse"],"par":["bon","bonne"]},{"ipa":"ɛ̃","nombre":"nasal in (vin)","como":"Boca como en è y aire por la nariz. Sin n final.","trampa":"Se escribe in, ain, ein, un: vin, pain, plein, un.","palabras":["vin","pain","matin","demain","important","plein"],"par":["vin","vent"]},{"ipa":"ʁ","nombre":"r francesa (Paris)","como":"La parte de atrás de la lengua se acerca a la campanilla y raspa suave, como hacer gárgaras muy suaves. La punta queda abajo.","trampa":"No la vibres con la punta de la lengua como la r española.","palabras":["Paris","rouge","très","merci","travail","heureux"],"par":["rue","lu"]},{"ipa":"z","nombre":"s sonora (rose)","como":"Una s con voz que zumba. Entre dos vocales, la s escrita suena así.","trampa":"poisson (pescado, s) y poison (veneno, z) son palabras distintas.","palabras":["rose","maison","zéro","chose","musique","les amis"],"par":["poison","poisson"]},{"ipa":"ʒ","nombre":"j francesa (je)","como":"Labios hacia adelante y una sh con voz, como la ll argentina.","trampa":"No es la jota española ni la y: je, jour, rouge.","palabras":["je","jour","rouge","manger","voyage","toujours"],"par":["gens","chant"]},{"ipa":"ʃ","nombre":"ch francesa (chat)","como":"Labios en trompa, sopla sin voz: el sonido de pedir silencio.","trampa":"No es la ch de chocolate: chat suena 'shá'.","palabras":["chat","chose","chercher","acheter","riche","chaque"],"par":["chou","joue"]},{"ipa":"v","nombre":"v de dientes","como":"Dientes de arriba sobre el labio de abajo, con voz.","trampa":"vin (vino) y bain (baño) son distintos.","palabras":["vin","vous","voiture","avoir","travail","souvent"],"par":["vin","bain"]},{"ipa":"ɥ","nombre":"u semivocal (huit)","como":"Una y francesa muy corta que se desliza a la siguiente vocal, con los labios redondeados.","trampa":"No la digas como u española: huit no es uit.","palabras":["huit","nuit","lui","puis","cuisine","suis"],"par":["lui","Louis"]}]},"ipa":{"en":{"about":["ɐ","b","aʊ","t"],"around":["ə","ɹ","ɹ","aʊ","n","d"],"bad":["b","æ","d"],"banana":["b","ɐ","n","æ","n","ə"],"beat":["b","i","t"],"bed":["b","ɛ","d"],"behind":["b","ᵻ","h","aɪ","n","d"],"best":["b","ɛ","s","t"],"bird":["b","ɜ","d"],"bit":["b","ɪ","t"],"black":["b","l","æ","k"],"body":["b","ɑ","d","i"],"book":["b","ʊ","k"],"both":["b","oʊ","θ"],"busy":["b","ɪ","z","i"],"but":["b","ʌ","t"],"casual":["k","æ","ʒ","u","ə","l"],"cat":["k","æ","t"],"chair":["tʃ","ɛɹ"],"change":["tʃ","eɪ","n","dʒ"],"cot":["k","ɑ","t"],"could":["k","ʊ","d"],"cut":["k","ʌ","t"],"data":["d","eɪ","ɾ","ə"],"day":["d","eɪ"],"decision":["d","ᵻ","s","ɪ","ʒ","ə","n"],"easy":["i","z","i"],"eat":["i","t"],"estate":["ᵻ","s","t","eɪ","t"],"father":["f","ɑ","ð","ə","ɹ"],"feel":["f","i","l"],"fill":["f","ɪ","l"],"first":["f","ɜ","s","t"],"fission":["f","ɪ","ʃ","ə","n"],"fool":["f","u","l"],"full":["f","ʊ","l"],"good":["ɡ","ʊ","d"],"growth":["ɡ","ɹ","oʊ","θ"],"happy":["h","æ","p","i"],"hat":["h","æ","t"],"have":["h","æ","v"],"help":["h","ɛ","l","p"],"hold":["h","oʊ","l","d"],"hot":["h","ɑ","t"],"how":["h","aʊ"],"huge":["h","j","u","dʒ"],"improve":["ɪ","m","p","ɹ","u","v"],"is":["ɪ","z"],"issue":["ɪ","ʃ","u"],"it":["ɪ","t"],"jet":["dʒ","ɛ","t"],"job":["dʒ","ɑ","b"],"just":["dʒ","ʌ","s","t"],"language":["l","æ","ŋ","ɡ","w","ɪ","dʒ"],"large":["l","ɑ","ɹ","dʒ"],"learn":["l","ɜ","n"],"leave":["l","i","v"],"level":["l","ɛ","v","ə","l"],"light":["l","aɪ","t"],"live":["l","aɪ","v"],"long":["l","ɔ","ŋ"],"look":["l","ʊ","k"],"love":["l","ʌ","v"],"machine":["m","ə","ʃ","i","n"],"man":["m","æ","n"],"manager":["m","æ","n","ɪ","dʒ","ə","ɹ"],"measure":["m","ɛ","ʒ","ə","ɹ"],"method":["m","ɛ","θ","ə","d"],"minute":["m","ɪ","n","ɪ","t"],"model":["m","ɑ","d","ə","l"],"money":["m","ʌ","n","i"],"nation":["n","eɪ","ʃ","ə","n"],"not":["n","ɑ","t"],"old":["oʊ","l","d"],"other":["ʌ","ð","ə","ɹ"],"over":["oʊ","v","ə","ɹ"],"people":["p","i","p","ə","l"],"plan":["p","l","æ","n"],"pleasure":["p","l","ɛ","ʒ","ə","ɹ"],"problem":["p","ɹ","ɑ","b","l","ə","m"],"project":["p","ɹ","ɑ","dʒ","ɛ","k","t"],"put":["p","ʊ","t"],"really":["ɹ","iə","l","i"],"reason":["ɹ","i","z","ə","n"],"red":["ɹ","ɛ","d"],"research":["ɹ","ᵻ","s","ɜ","tʃ"],"right":["ɹ","aɪ","t"],"run":["ɹ","ʌ","n"],"school":["s","k","u","l"],"share":["ʃ","ɛɹ"],"she":["ʃ","i"],"sheep":["ʃ","i","p"],"ship":["ʃ","ɪ","p"],"sin":["s","ɪ","n"],"sing":["s","ɪ","ŋ"],"sink":["s","ɪ","ŋ","k"],"sip":["s","ɪ","p"],"skill":["s","k","ɪ","l"],"speak":["s","p","i","k"],"sport":["s","p","ɔ","ɹ","t"],"spring":["s","p","ɹ","ɪ","ŋ"],"state":["s","t","eɪ","t"],"stop":["s","t","ɑ","p"],"study":["s","t","ʌ","d","i"],"support":["s","ə","p","ɔ","ɹ","t"],"sure":["ʃ","ʊɹ"],"team":["t","i","m"],"the":["ð","ə"],"they":["ð","eɪ"],"thing":["θ","ɪ","ŋ"],"think":["θ","ɪ","ŋ","k"],"this":["ð","ɪ","s"],"though":["ð","oʊ"],"thought":["θ","ɔ","t"],"three":["θ","ɹ","i"],"today":["t","ə","d","eɪ"],"trouble":["t","ɹ","ʌ","b","ə","l"],"up":["ʌ","p"],"usual":["j","u","ʒ","u","ə","l"],"value":["v","æ","l","j","u"],"very":["v","ɛ","ɹ","i"],"vest":["v","ɛ","s","t"],"vision":["v","ɪ","ʒ","ə","n"],"walk":["w","ɔ","k"],"was":["w","ʌ","z"],"whether":["w","ɛ","ð","ə","ɹ"],"will":["w","ɪ","l"],"word":["w","ɜ","d"],"work":["w","ɜ","k"],"working":["w","ɜ","k","ɪ","ŋ"],"yet":["j","ɛ","t"],"zip":["z","ɪ","p"],"zoo":["z","u"]},"fr":{"France":["f","ʁ","ɑ̃","s"],"Louis":["l","w","i"],"Paris":["p","a","ʁ","i"],"acheter":["a","ʃ","t","e"],"aller":["a","l","e"],"avoir":["a","v","w","a","ʁ"],"bain":["b","ɛ̃"],"beau":["b","o"],"bleu":["b","l","ø"],"bon":["b","ɔ̃"],"bonne":["b","ɔ","n"],"café":["k","a","f","e"],"chant":["ʃ","ɑ̃"],"chaque":["ʃ","a","k"],"chat":["ʃ","a"],"chaud":["ʃ","o"],"chercher":["ʃ","ɛ","ʁ","ʃ","e"],"chose":["ʃ","ɔ","z"],"chou":["ʃ","u"],"cuisine":["k","y","i","z","i","n"],"côté":["k","o","t","e"],"dans":["d","ɑ̃"],"demain":["d","ə","m","ɛ̃"],"deux":["d","ø"],"doux":["d","u"],"eau":["o"],"elle":["ɛ","l"],"enfant":["ɑ̃","f","ɑ̃"],"fait":["f","ɛ"],"faux":["f","o"],"fée":["f","e"],"fête":["f","ɛ","t"],"gens":["ʒ","ɑ̃"],"grand":["ɡ","ʁ","ɑ̃"],"heure":["œ","ʁ"],"heureux":["ø","ʁ","ø"],"homme":["ɔ","m"],"huit":["y","i","t"],"hôtel":["o","t","ɛ","l"],"important":["ɛ̃","p","ɔ","ʁ","t","ɑ̃"],"je":["ʒ","ə"],"jeu":["ʒ","ø"],"jeune":["ʒ","ø","n"],"jeûne":["ʒ","ø","n"],"joue":["ʒ","u"],"jour":["ʒ","u","ʁ"],"lait":["l","ɛ"],"le":["l","ə"],"lent":["l","ɑ̃"],"les":["l","e"],"les amis":["l","e","z","a","m","i"],"long":["l","ɔ̃"],"lu":["l","y"],"lui":["l","y","i"],"mais":["m","ɛ"],"maison":["m","ɛ","z","ɔ̃"],"manger":["m","ɑ̃","ʒ","e"],"matin":["m","a","t","ɛ̃"],"merci":["m","ɛ","ʁ","s","i"],"mieux":["m","j","ø"],"monde":["m","ɔ̃","d"],"musique":["m","y","z","i","k"],"mère":["m","ɛ","ʁ"],"ne":["n","ə"],"neuf":["n","œ","f"],"nez":["n","e"],"nom":["n","ɔ̃"],"notre":["n","o","t","ʁ"],"nous":["n","u"],"nuit":["n","y","i"],"nôtre":["n","o","t","ʁ"],"pain":["p","ɛ̃"],"parler":["p","a","ʁ","l","e"],"petit":["p","ə","t","i"],"peu":["p","ø"],"peur":["p","œ","ʁ"],"plein":["p","l","ɛ̃"],"poison":["p","w","a","z","ɔ̃"],"poisson":["p","w","a","s","ɔ̃"],"porte":["p","ɔ","ʁ","t"],"premier":["p","ʁ","ə","m","j","e"],"professeur":["p","ʁ","o","f","ɛ","s","œ","ʁ"],"puis":["p","y","i"],"riche":["ʁ","i","ʃ"],"rose":["ʁ","ɔ","z"],"roue":["ʁ","u"],"rouge":["ʁ","u","ʒ"],"rue":["ʁ","y"],"réponse":["ʁ","e","p","ɔ̃","s"],"salut":["s","a","l","y"],"saule":["s","o","l"],"sol":["s","ɔ","l"],"souvent":["s","u","v","ɑ̃"],"suis":["s","y","i"],"sœur":["s","œ","ʁ"],"temps":["t","ɑ̃"],"toujours":["t","u","ʒ","u","ʁ"],"tout":["t","u"],"travail":["t","ʁ","a","v","a","j"],"très":["t","ʁ","ɛ"],"tu":["t","y"],"téléphone":["t","e","l","e","f","ɔ","n"],"vent":["v","ɑ̃"],"vin":["v","ɛ̃"],"voiture":["v","w","a","t","y","ʁ"],"vous":["v","u"],"voyage":["v","w","a","j","a","ʒ"],"vu":["v","y"],"zéro":["z","e","ʁ","o"],"école":["e","k","ɔ","l"],"était":["e","t","ɛ"],"étudier":["e","t","y","d","j","e"],"été":["e","t","e"]}}};
+
+const VOCALES = new Set(["ɪ","i","æ","ʌ","ɑ","ə","ʊ","ɜ","y","u","ø","œ","e","ɛ","o","ɔ","ɑ̃","ɔ̃","ɛ̃"]);
+// Lo que suele salir en lugar del sonido cuando el español se cuela.
+const CONFUSION = { "θ":"t","ð":"d","ɪ":"i","i":"ɪ","æ":"a","ʌ":"a","ɑ":"o","ə":"e","ʊ":"u","ɜ":"e","v":"b","z":"s",
+  "ʃ":"tʃ","dʒ":"j","ʒ":"ʃ","h":"x","ŋ":"n","ɹ":"r","l":"l","s":"e","y":"u","u":"y","ø":"u","œ":"e","e":"ɛ",
+  "ɛ":"e","o":"ɔ","ɔ":"o","ɑ̃":"a","ɔ̃":"o","ɛ̃":"e","ʁ":"r","ɥ":"w" };
+// Datos falsos para que el prototipo se vea usado.
+const PROGRESO = {
+  en: { dominio: { "ɪ":.45,"i":.9,"æ":.3,"ʌ":.5,"ɑ":.6,"ə":.42,"ʊ":.55,"ɜ":.28,"θ":.22,"ð":.3,"v":.5,"z":.45,"ʃ":.88,"dʒ":.8,"ʒ":.4,"h":.72,"ŋ":.75,"ɹ":.52,"l":.6,"s":.66 },
+        dificiles: [["θ",9,14],["ɜ",7,11],["æ",6,10],["ð",5,9]], promedio: 72, intentos: 148,
+        serie: [40,55,50,62,58,70,64,75,68,72,66,78,74,70,81,76,72,79,83,75] },
+  fr: { dominio: { "y":.25,"u":.7,"ø":.3,"œ":.35,"ə":.6,"e":.75,"ɛ":.55,"o":.7,"ɔ":.5,"ɑ̃":.4,"ɔ̃":.45,"ɛ̃":.28,"ʁ":.2,"z":.65,"ʒ":.6,"ʃ":.85,"v":.5,"ɥ":.32 },
+        dificiles: [["ʁ",11,15],["y",8,12],["ɛ̃",6,9],["ɥ",4,7]], promedio: 58, intentos: 63,
+        serie: [30,42,38,45,50,47,55,52,60,57,54,62,58,61,65,60,58,63,66,62] },
+};
+const DIAS = [["L",0],["M",1],["X",1],["J",1],["V",1],["S",1],["D",2]]; // 2 = hoy, ya practicado
+const DEL_DIA = { en: "θ", fr: "ʁ" };
+const PATRONES = ["mixto", "bien", "mal"];
+
+const est = { lang: "en", vista: "practicar", filtro: "todos", leccion: null, palabra: 0,
+              grab: "listo", resultado: null, intento: 0, modelo: 0, micBloqueado: false };
+const app = document.getElementById("app");
+const capa = document.getElementById("capa");
+const MB = 300;
+
+const ico = {
+  atras: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+  play: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>',
+  mic: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>',
+  stop: '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="3" fill="currentColor"/></svg>',
+  micNo: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 9v2a3 3 0 0 0 5.1 2.1M15 9.3V6a3 3 0 0 0-5.7-1.3M5.5 11a6.5 6.5 0 0 0 10.6 5M18.5 11a6.4 6.4 0 0 1-.4 2.2M12 17.5V21M3 3l18 18"/></svg>',
+  flecha: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+  check: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  alerta: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><circle cx="12" cy="16.5" r=".6" fill="currentColor"/></svg>',
+  candado: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  wifi: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.8 16a5 5 0 0 1 6.4 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/></svg>',
+};
+
+const lecciones = () => DATOS.lecciones[est.lang];
+const ipaDe = palabra => DATOS.ipa[est.lang][palabra] || [];
+const anunciar = t => { document.getElementById("anuncio").textContent = t; };
+const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function hablar(texto) {
+  if (!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(texto);
+  u.lang = est.lang === "en" ? "en-US" : "fr-FR";
+  u.rate = .85;
+  speechSynthesis.speak(u);
+}
+
+function toast(texto) {
+  const t = document.createElement("div");
+  t.className = "toast"; t.role = "status"; t.textContent = texto;
+  document.body.append(t);
+  setTimeout(() => t.remove(), 2200);
+}
+
+function anillo(fraccion, tam = 34) {
+  const r = (tam - 5) / 2, c = 2 * Math.PI * r;
+  return `<svg class="anillo" width="${tam}" height="${tam}" aria-hidden="true">
+    <circle class="pista" cx="${tam / 2}" cy="${tam / 2}" r="${r}"/>
+    <circle class="valor" cx="${tam / 2}" cy="${tam / 2}" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - fraccion)}"/></svg>`;
+}
+
+function selectorIdioma() {
+  return `<div class="idioma" role="group" aria-label="Idioma">
+    <button data-lang="en" aria-pressed="${est.lang === "en"}">English</button>
+    <button data-lang="fr" aria-pressed="${est.lang === "fr"}">Français</button></div>`;
+}
+
+/* ---------- Practicar ---------- */
+function vistaPracticar() {
+  const ls = lecciones(), p = PROGRESO[est.lang];
+  const i = ls.findIndex(l => l.ipa === DEL_DIA[est.lang]), dia = ls[i];
+  const losa = (l, n) => {
+    const d = p.dominio[l.ipa] ?? 0;
+    return `<button class="losa" data-leccion="${n}" aria-label="${l.nombre}, dominio ${Math.round(d * 100)}%${d < .35 ? ", para repasar" : ""}">
+      ${d < .35 ? '<span class="punto" aria-hidden="true"></span>' : ""}
+      <span class="ipa">${l.ipa}</span><small>${l.palabras[0]}</small>
+      <span class="barrita" aria-hidden="true"><i style="width:${d * 100}%"></i></span></button>`;
+  };
+  const grupo = vocal => ls.map((l, n) => [l, n]).filter(([l]) => VOCALES.has(l.ipa) === vocal);
+  const voc = grupo(true), cons = grupo(false);
+  return `<header class="barra"><span class="marca"><i></i>IPA Coach</span>${selectorIdioma()}</header>
+    <h1>Hola de nuevo.</h1>
+    <p class="sub">Llevas 6 días seguidos. Unos minutos hoy y la mantienes.</p>
+    ${avisoModelo()}
+    <article class="tarjeta heroe" aria-labelledby="del-dia">
+      <span class="etiqueta">Sonido del día</span>
+      <div class="glifo ipa" aria-hidden="true">${dia.ipa}</div>
+      <h3 id="del-dia">${dia.nombre}</h3>
+      <p>${dia.trampa}</p>
+      <div class="palabritas">${dia.palabras.slice(0, 4).map(w => `<span>${w}</span>`).join("")}</div>
+      <button class="boton primario" data-leccion="${i}">Empezar</button>
+    </article>
+    <h2>Vocales <span>${voc.length}</span></h2>
+    <div class="rejilla">${voc.map(([l, n]) => losa(l, n)).join("")}</div>
+    <h2>Consonantes <span>${cons.length}</span></h2>
+    <div class="rejilla">${cons.map(([l, n]) => losa(l, n)).join("")}</div>`;
+}
+
+function avisoModelo() {
+  if (est.modelo >= 1) return "";
+  return `<button class="aviso" data-abrir="modelo" aria-label="Preparando el evaluador, ${Math.round(est.modelo * 100)}%. Ver detalles">
+    <span class="mini">${anillo(est.modelo)}</span>
+    <span><b>Preparando el evaluador · <span id="pct-aviso">${Math.round(est.modelo * 100)}</span>%</b>
+    Mientras tanto puedes escuchar y leer las lecciones.</span></button>`;
+}
+
+/* ---------- Sonidos ---------- */
+function vistaSonidos() {
+  const ls = lecciones().map((l, n) => [l, n]).filter(([l]) =>
+    est.filtro === "todos" || VOCALES.has(l.ipa) === (est.filtro === "vocales"));
+  const boton = (id, txt) => `<button data-filtro="${id}" aria-pressed="${est.filtro === id}">${txt}</button>`;
+  return `<header class="barra"><span class="marca"><i></i>Sonidos</span>${selectorIdioma()}</header>
+    <h1>${est.lang === "en" ? "Inglés" : "Francés"}</h1>
+    <p class="sub">${lecciones().length} sonidos que el español no tiene o cambia.</p>
+    <div class="filtro" role="group" aria-label="Filtrar">${boton("todos", "Todos")}${boton("vocales", "Vocales")}${boton("consonantes", "Consonantes")}</div>
+    <div style="margin-top:8px">${ls.map(([l, n]) => `
+      <button class="fila" data-leccion="${n}"><span class="ipa">${l.ipa}</span>
+        <div><b>${l.nombre}</b><p>${l.como}</p></div>${ico.flecha}</button>`).join("")}</div>`;
+}
+
+/* ---------- Progreso ---------- */
+function vistaProgreso() {
+  const p = PROGRESO[est.lang], ls = lecciones();
+  const buscar = ipa => ls.findIndex(l => l.ipa === ipa);
+  const min = Math.min(...p.serie) - 10, max = 100, w = 320, h = 72;
+  const pts = p.serie.map((v, n) => `${(n / (p.serie.length - 1)) * w},${h - 6 - ((v - min) / (max - min)) * (h - 12)}`).join(" ");
+  const ultimo = pts.split(" ").pop().split(",");
+  const dominados = ls.filter(l => (p.dominio[l.ipa] ?? 0) >= .7);
+  return `<header class="barra"><span class="marca"><i></i>Progreso</span>${selectorIdioma()}</header>
+    <h1>Vas bien.</h1>
+    <p class="sub">Tu promedio subió 9 puntos en las últimas dos semanas.</p>
+    <div class="cifras">
+      <div class="tarjeta cifra"><div class="num">6<small>días</small></div><p>de racha</p></div>
+      <div class="tarjeta cifra"><div class="num">${p.promedio}<small>%</small></div><p>promedio reciente</p></div>
+    </div>
+    <section class="tarjeta" style="margin-top:10px">
+      <h2 style="margin:0">Esta semana <span>${p.intentos} intentos en total</span></h2>
+      <div class="semana">${DIAS.map(([d, v]) => `<span class="dia${v ? " hecho" : ""}${v === 2 ? " hoy" : ""}"><i></i>${d}<span class="oculto">${v ? "practicaste" : "no practicaste"}</span></span>`).join("")}</div>
+    </section>
+    <section class="tarjeta" style="margin-top:10px">
+      <h2 style="margin:0">Últimos 20 intentos <span>${p.serie.at(-1)}%</span></h2>
+      <svg class="linea-grafica" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="Acierto de los últimos 20 intentos, de ${p.serie[0]}% a ${p.serie.at(-1)}%">
+        <polyline points="${pts}" fill="none" stroke="var(--acento)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+        <circle cx="${ultimo[0]}" cy="${ultimo[1]}" r="3.5" fill="var(--acento)"/></svg>
+    </section>
+    <h2>Para trabajar <span>más fallados</span></h2>
+    <div class="trabajar">${p.dificiles.map(([ipa, f, t]) => {
+      const l = ls[buscar(ipa)];
+      return `<button class="fila" data-leccion="${buscar(ipa)}"><span class="ipa">${ipa}</span>
+        <div><b>${l.nombre}</b><p>Fallado ${f} de ${t} veces</p><div class="medidor" aria-hidden="true"><i style="width:${(f / t) * 100}%"></i></div></div>${ico.flecha}</button>`;
+    }).join("")}</div>
+    <h2>Ya te salen <span>${dominados.length}</span></h2>
+    <div class="dominados">${dominados.map(l => `<span class="ipa" title="${l.nombre}">${l.ipa}</span>`).join("")}</div>`;
+}
+
+/* ---------- Lección ---------- */
+function vistaLeccion() {
+  const l = lecciones()[est.leccion];
+  const palabra = l.palabras[est.palabra];
+  const objetivo = ipaDe(palabra).map(f => f === l.ipa ? `<mark>${f}</mark>` : f).join("");
+  const parIpa = w => ipaDe(w).join("");
+  return `<header class="cabecera">
+      <button class="redondo" data-volver aria-label="Volver">${ico.atras}</button>
+      <div class="titulo">${l.nombre}<small>${est.lang === "en" ? "Inglés" : "Francés"}</small></div></header>
+    <div class="leccion-glifo ipa" aria-hidden="true">${l.ipa}</div>
+
+    <section class="paso" aria-labelledby="p1"><h2 id="p1">1 · Cómo se hace</h2>
+      <p class="como">${l.como}</p>
+      <div class="ojo" role="note"><span aria-hidden="true">${ico.alerta}</span><span><b>Ojo.</b> ${l.trampa}</span></div>
+    </section>
+
+    <section class="paso" aria-labelledby="p2"><h2 id="p2">2 · Dilo tú <span>${est.palabra + 1} de ${l.palabras.length}</span></h2>
+      <div class="palabras" role="group" aria-label="Palabras">${l.palabras.map((w, n) =>
+        `<button data-palabra="${n}" aria-pressed="${n === est.palabra}">${w}</button>`).join("")}</div>
+      <div class="tarjeta practica">
+        <div class="palabra">${palabra}</div>
+        <div class="objetivo ipa" aria-label="Pronunciación esperada">/${objetivo}/</div>
+        <button class="redondo" data-hablar="${palabra}">${ico.play} Escuchar</button>
+        <div id="zona-resultado">${zonaResultado(l)}</div>
+      </div>
+    </section>
+
+    <section class="paso" aria-labelledby="p3"><h2 id="p3">3 · Par mínimo</h2>
+      <p class="sub" style="margin:-4px 0 12px">Escucha la diferencia y di las dos.</p>
+      <div class="par">${l.par.map(w => `<button data-hablar="${w}" aria-label="Escuchar ${w}">
+        <b>${w}</b><span class="ipa">/${parIpa(w)}/</span><small>${ico.play} Escuchar</small></button>`).join("")}</div>
+    </section>`;
+}
+
+function zonaResultado(l) {
+  if (est.micBloqueado && est.grab === "error") return `
+    <div class="error" role="alert">
+      <div class="icono">${ico.micNo}</div>
+      <h3>No tengo acceso al micrófono</h3>
+      <p>Sin micrófono no puedo escucharte. Actívalo en Chrome:</p>
+      <ol><li>Toca el ${ico.candado.replace('width="18" height="18"', 'width="15" height="15" style="vertical-align:-2px"')} junto a la dirección.</li>
+        <li>Entra a <b>Permisos</b> → <b>Micrófono</b>.</li><li>Elige <b>Permitir</b> y vuelve aquí.</li></ol>
+      <button class="boton primario" data-reintentar>Reintentar</button></div>`;
+  if (est.grab === "analizando") return `<div class="resultado" aria-busy="true"><p class="sub">Escuchando cada sonido…</p>
+    <div class="esqueleto" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>`;
+  if (est.grab !== "resultado" || !est.resultado) return "";
+  const r = est.resultado, bien = r.filas.filter(f => f.estado === "bien").length;
+  const txt = { bien: "bien", casi: "casi", mal: "repite" };
+  const marca = { bien: "✓", casi: "~", mal: "✕" };
+  const fallo = r.filas.find(f => f.estado === "mal") || r.filas.find(f => f.estado === "casi");
+  const consejo = !fallo ? "Todo en su sitio. Prueba la siguiente palabra."
+    : fallo.estado === "mal" ? `La <span class="ipa">/${fallo.ipa}/</span> te salió como <span class="ipa">/${fallo.sono}/</span>. Repasa el paso 1 y vuelve a intentarlo.`
+    : `La <span class="ipa">/${fallo.ipa}/</span> va por buen camino; exagérala un poco más.`;
+  return `<div class="resultado">
+    <div class="nota"><span class="num">${r.acierto}%</span><p>${bien} de ${r.filas.length} sonidos bien</p></div>
+    <ul class="fichas" aria-label="Resultado por sonido">${r.filas.map((f, n) => `
+      <li class="ficha ${f.estado}" style="animation-delay:${n * 60}ms" aria-label="/${f.ipa}/: ${txt[f.estado]}${f.sono !== f.ipa ? `, sonó como /${f.sono}/` : ""}">
+        <span class="ipa">${f.ipa}</span>
+        <small><span aria-hidden="true">${marca[f.estado]}</span> ${f.sono !== f.ipa ? `sonó <span class="ipa">${f.sono}</span>` : txt[f.estado]}</small></li>`).join("")}</ul>
+    <p class="oido">Se oyó <span class="ipa">/${r.oido}/</span></p>
+    <p class="consejo">${consejo}</p>
+    <div class="acciones">
+      <button class="boton secundario" data-tu-voz>${ico.play} Tu voz</button>
+      <button class="boton secundario" data-siguiente>Siguiente ${ico.flecha}</button></div>
+    <div class="leyenda" aria-hidden="true"><span><i style="background:var(--bien)"></i>bien</span><span><i style="background:var(--casi)"></i>casi</span><span><i style="background:var(--mal)"></i>repite</span></div>
+  </div>`;
+}
+
+function dock() {
+  const g = est.grab;
+  const etiqueta = { listo: "Grabar", grabando: "Terminar grabación", analizando: "Analizando", resultado: "Grabar otra vez", error: "Grabar" }[g];
+  const ayuda = { listo: "Toca y di la palabra", grabando: '<span id="reloj">0:00</span> · toca para terminar',
+    analizando: "Analizando…", resultado: "Toca para intentarlo otra vez", error: "Micrófono sin permiso" }[g];
+  return `<div class="dock">
+    ${g === "grabando" ? `<div class="ondas" aria-hidden="true">${"<i></i>".repeat(24)}</div>` : ""}
+    <button class="grabar" data-estado="${g}" data-grabar aria-label="${etiqueta}" ${g === "analizando" ? "disabled" : ""}>
+      ${g === "grabando" ? ico.stop : ico.mic}</button>
+    <p>${ayuda}</p></div>`;
+}
+
+/* ---------- Puntaje falso ---------- */
+function resultadoFalso(l, palabra, patron) {
+  const fonemas = ipaDe(palabra);
+  const blanco = fonemas.includes(l.ipa) ? l.ipa : fonemas[0];
+  const otra = fonemas.find(f => f !== blanco && VOCALES.has(f));
+  const filas = fonemas.map(f => {
+    let estado = "bien";
+    if (patron === "mixto") estado = f === blanco ? "mal" : f === otra ? "casi" : "bien";
+    if (patron === "mal") estado = f === blanco ? "mal" : f === otra ? "mal" : "bien";
+    const sono = estado === "bien" ? f : CONFUSION[f] || f;
+    return { ipa: f, estado, sono };
+  });
+  return { filas, oido: filas.map(f => f.sono).join(""), acierto: Math.round(100 * filas.filter(f => f.estado === "bien").length / filas.length) };
+}
+
+/* ---------- Grabación simulada ---------- */
+let reloj, ondas;
+function grabar() {
+  if (est.grab === "grabando") return terminar();
+  if (est.modelo < 1) return abrirModelo();
+  if (est.micBloqueado) { est.grab = "error"; anunciar("No hay acceso al micrófono"); return pintar(); }
+  est.grab = "grabando"; est.resultado = null; pintar();
+  anunciar("Grabando");
+  const inicio = Date.now(), barras = [...document.querySelectorAll(".ondas i")];
+  reloj = setInterval(() => {
+    const s = Math.floor((Date.now() - inicio) / 1000);
+    const r = document.getElementById("reloj"); if (r) r.textContent = `0:0${s}`;
+    if (s >= 4) terminar();
+  }, 250);
+  if (!reducido) ondas = setInterval(() => barras.forEach((b, n) =>
+    b.style.height = 4 + Math.random() * 24 * Math.sin(Math.PI * (n + 1) / 25) + "px"), 90);
+}
+
+function terminar() {
+  clearInterval(reloj); clearInterval(ondas);
+  est.grab = "analizando"; pintar();
+  setTimeout(() => mostrarResultado(PATRONES[est.intento++ % PATRONES.length]), 900);
+}
+
+function mostrarResultado(patron) {
+  const l = lecciones()[est.leccion];
+  est.resultado = resultadoFalso(l, l.palabras[est.palabra], patron);
+  est.grab = "resultado"; pintar();
+  anunciar(`${est.resultado.acierto}% de sonidos bien`);
+  document.getElementById("zona-resultado")?.scrollIntoView({ behavior: reducido ? "auto" : "smooth", block: "center" });
+}
+
+/* ---------- Descarga del modelo (simulada) ---------- */
+let descarga;
+function iniciarDescarga() {
+  clearInterval(descarga);
+  descarga = setInterval(() => {
+    est.modelo = Math.min(1, est.modelo + .012 + Math.random() * .01);
+    actualizarCarga();
+    if (est.modelo >= 1) { clearInterval(descarga); if (!capa.innerHTML && est.vista === "practicar") pintar(); }
+  }, 120);
+}
+
+function actualizarCarga() {
+  const pct = Math.round(est.modelo * 100);
+  const aviso = document.getElementById("pct-aviso");
+  if (aviso) { aviso.textContent = pct; aviso.closest(".aviso").querySelector(".mini").innerHTML = anillo(est.modelo); }
+  const barra = document.getElementById("barra-modelo");
+  if (!barra) return;
+  barra.style.width = pct + "%";
+  barra.parentElement.setAttribute("aria-valuenow", pct);
+  document.getElementById("mb-modelo").textContent = est.modelo >= 1 ? "Listo" : `${Math.round(est.modelo * MB)} MB de ${MB} MB`;
+  document.getElementById("paso-modelo").textContent = est.modelo >= 1 ? "Funciona sin internet" : est.modelo > .9 ? "Preparando…" : "Descargando…";
+  const b = document.getElementById("boton-modelo");
+  if (est.modelo >= 1 && b.dataset.listo !== "1") { b.dataset.listo = "1"; b.textContent = "Empezar a practicar"; b.className = "boton primario"; }
+}
+
+function abrirModelo() {
+  capa.innerHTML = `<div class="velo" data-cerrar>
+    <div class="hoja" role="dialog" aria-modal="true" aria-labelledby="t-modelo">
+      <div class="agarre" aria-hidden="true"></div>
+      <span class="etiqueta">Solo la primera vez</span>
+      <h3 id="t-modelo">Preparando el evaluador</h3>
+      <p>Para corregirte sonido por sonido, IPA Coach guarda en tu teléfono un modelo que reconoce fonemas.</p>
+      <ul class="puntos">
+        <li>${ico.wifi}<span>Son unos ${MB} MB. Mejor con Wi-Fi.</span></li>
+        <li>${ico.check}<span>Se descarga una vez; después funciona sin internet.</span></li>
+        <li>${ico.candado}<span>Tu voz se analiza en el teléfono y no sale de él.</span></li>
+      </ul>
+      <div class="barra-carga" role="progressbar" aria-label="Descarga del modelo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="barra-modelo"></i></div>
+      <div class="carga-texto"><span id="paso-modelo">Descargando…</span><span id="mb-modelo"></span></div>
+      <button class="boton secundario" id="boton-modelo" data-cerrar-boton>Seguir leyendo mientras tanto</button>
+    </div></div>`;
+  actualizarCarga();
+  capa.querySelector("#boton-modelo").focus();
+}
+
+function cerrarCapa() { capa.innerHTML = ""; pintar(); }
+
+/* ---------- Navegación ---------- */
+function pintar() {
+  const enLeccion = est.vista === "leccion";
+  app.innerHTML = `<main class="vista" id="vista-${est.vista}">${
+    { practicar: vistaPracticar, sonidos: vistaSonidos, progreso: vistaProgreso, leccion: vistaLeccion }[est.vista]()}</main>
+    ${enLeccion ? dock() : ""}`;
+  document.getElementById("pestanas").hidden = enLeccion;
+  document.querySelectorAll("[data-ir]").forEach(b => b.dataset.ir === est.vista ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
+}
+
+function ir(vista) {
+  clearInterval(reloj); clearInterval(ondas);
+  est.vista = vista; pintar(); scrollTo(0, 0);
+}
+
+function abrirLeccion(n) {
+  Object.assign(est, { leccion: n, palabra: 0, grab: "listo", resultado: null });
+  ir("leccion");
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("button, [data-cerrar]");
+  if (!t) return;
+  const d = t.dataset;
+  if (d.cerrar !== undefined && e.target !== t) return;
+  if (d.ir) ir(d.ir);
+  else if (d.lang) { est.lang = d.lang; pintar(); }
+  else if (d.filtro) { est.filtro = d.filtro; pintar(); }
+  else if (d.leccion !== undefined) abrirLeccion(+d.leccion);
+  else if (d.volver !== undefined) ir("practicar");
+  else if (d.palabra !== undefined) { est.palabra = +d.palabra; est.grab = "listo"; est.resultado = null; pintar(); }
+  else if (d.hablar) hablar(d.hablar);
+  else if (d.grabar !== undefined) grabar();
+  else if (d.siguiente !== undefined) { est.palabra = (est.palabra + 1) % lecciones()[est.leccion].palabras.length; est.grab = "listo"; est.resultado = null; pintar(); }
+  else if (d.tuVoz !== undefined) toast("Aquí sonaría tu grabación");
+  else if (d.reintentar !== undefined) { est.micBloqueado = false; est.grab = "listo"; pintar(); toast("Micrófono activado"); }
+  else if (d.abrir === "modelo") abrirModelo();
+  else if (d.cerrar !== undefined || d.cerrarBoton !== undefined) cerrarCapa();
+  else if (d.demo) demo(d.demo);
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && capa.innerHTML) cerrarCapa(); });
+
+function demo(caso) {
+  document.getElementById("demo").open = false;
+  capa.innerHTML = "";
+  const delDia = lecciones().findIndex(l => l.ipa === DEL_DIA[est.lang]);
+  if (caso === "modelo") { est.modelo = 0; ir("practicar"); iniciarDescarga(); return abrirModelo(); }
+  est.modelo = 1; clearInterval(descarga);
+  est.micBloqueado = caso === "mic";
+  if (est.vista !== "leccion") abrirLeccion(delDia);
+  if (caso === "grabando") return grabar();
+  if (caso === "mic") return grabar();
+  est.grab = "listo"; mostrarResultado(caso);
+}
+
+pintar();
+iniciarDescarga();
+// Atajo para revisar un estado directo: index.html#mixto, #progreso, #mic…
+const atajo = location.hash.slice(1);
+if (["sonidos", "progreso"].includes(atajo)) { est.modelo = 1; ir(atajo); }
+else if (["modelo", "grabando", "mixto", "bien", "mal", "mic"].includes(atajo)) demo(atajo);
+</script>
+</body>
+</html>

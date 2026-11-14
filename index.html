@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0b">
+<meta name="description" content="Aprende a articular los sonidos del inglés y el francés. Te escucha y te corrige sonido por sonido, sin internet.">
+<title>IPA Coach</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="iconos/icono-192.png" type="image/png">
+<link rel="apple-touch-icon" href="iconos/icono-192.png">
+<link rel="preload" href="fuentes/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fuentes/noto-ipa.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<div class="app" id="app">
+  <header class="barra">
+    <button class="icono" id="btn-sonidos" aria-label="Todos los sonidos">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></svg>
+    </button>
+    <div class="segmento" id="idioma" role="radiogroup" aria-label="Idioma" data-lang="en">
+      <span class="pastilla" aria-hidden="true"></span>
+      <button role="radio" aria-checked="true" data-lang="en" aria-label="Inglés">EN</button>
+      <button role="radio" aria-checked="false" data-lang="fr" aria-label="Francés" tabindex="-1">FR</button>
+    </div>
+    <button class="icono racha" id="btn-progreso" aria-label="Progreso">
+      <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16" fill="none" stroke="var(--capa-3)" stroke-width="2.5"/><circle id="racha-arco" cx="18" cy="18" r="16" fill="none" stroke="var(--acento)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 18 18)"/></svg>
+      <span id="racha-num">0</span>
+    </button>
+  </header>
+
+  <main class="foco" id="foco">
+    <section class="cabeza" aria-labelledby="simbolo">
+      <p class="ceja" id="ceja"></p>
+      <button class="simbolo" id="simbolo"><span class="ipa" id="glifo"></span></button>
+      <p class="nombre" id="nombre"></p>
+      <button class="como-link" id="btn-como">Cómo se hace</button>
+    </section>
+
+    <section class="carrusel" id="carrusel" role="region" aria-roledescription="carrusel" aria-label="Palabras para practicar" tabindex="0"></section>
+    <div class="puntos" id="puntos" aria-hidden="true"></div>
+  </main>
+
+  <footer class="mando">
+    <div class="pista" aria-hidden="true">
+      <span class="pista-texto" id="pista">Toca y di la palabra</span>
+      <span class="onda" id="onda"></span>
+    </div>
+    <div class="botones">
+      <button class="lateral" id="btn-escuchar" aria-label="Escuchar la palabra">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6"/><path d="M18.2 6.5a8 8 0 0 1 0 11"/></svg>
+      </button>
+      <button class="grabar" id="btn-grabar" aria-label="Grabar" aria-pressed="false">
+        <svg class="mic" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>
+        <svg class="stop" width="26" height="26" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="3.5" fill="currentColor"/></svg>
+      </button>
+      <button class="lateral" id="btn-siguiente" aria-label="Siguiente palabra">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </footer>
+</div>
+
+<p class="oculto" aria-live="polite" id="anuncio"></p>
+<div class="toast" id="toast" role="status"></div>
+
+<!-- Cómo se hace -->
+<dialog class="hoja" id="hoja-como" aria-labelledby="como-titulo">
+  <div class="asa"></div>
+  <div class="texto-hoja">
+    <h2 class="titulo-grande" id="como-titulo"></h2>
+    <h3>Cómo se hace</h3><p id="como-texto"></p>
+    <h3>Ojo</h3><p id="como-trampa"></p>
+    <h3>Par mínimo</h3><div class="par" id="como-par"></div>
+  </div>
+  <div class="acciones"><button class="secundario" data-cerrar>Entendido</button></div>
+</dialog>
+
+<!-- Todos los sonidos -->
+<dialog class="pantalla" id="sonidos" aria-labelledby="sonidos-titulo">
+  <div class="encabezado">
+    <button class="icono" data-cerrar aria-label="Volver"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <h2 id="sonidos-titulo">Sonidos</h2><span></span>
+  </div>
+  <p class="titulo-grande" id="sonidos-idioma"></p>
+  <p class="sub" id="sonidos-resumen"></p>
+  <form class="frase" id="frase">
+    <input id="frase-texto" maxlength="200" autocomplete="off" enterkeyhint="go" aria-label="Escribe una frase para practicar">
+    <button aria-label="Practicar esta frase"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </form>
+  <div id="sonidos-grupos"></div>
+</dialog>
+
+<!-- Progreso -->
+<dialog class="pantalla" id="progreso" aria-labelledby="progreso-titulo">
+  <div class="encabezado">
+    <button class="icono" data-cerrar aria-label="Volver"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <h2 id="progreso-titulo">Progreso</h2><span></span>
+  </div>
+  <div class="tarjeta-p">
+    <p class="cifra" id="racha"></p>
+    <p class="sub" style="margin-top:8px" id="racha-texto"></p>
+    <div class="calendario" id="calendario" role="img"></div>
+  </div>
+  <div class="tarjeta-p" id="tarjeta-promedio">
+    <p class="cifra" id="promedio"></p>
+    <p class="sube-baja" id="tendencia"></p>
+    <svg id="linea" viewBox="0 0 300 64" width="100%" height="64" style="margin-top:14px" role="img"></svg>
+  </div>
+  <div class="grupo">
+    <h3>Para trabajar</h3>
+    <div class="lista" id="trabajar"></div>
+  </div>
+</dialog>
+
+<!-- Primera vez: descarga del modelo -->
+<dialog class="pantalla" id="carga" aria-labelledby="carga-titulo">
+  <div class="centro">
+    <div class="disco" aria-hidden="true">
+      <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="none" stroke="var(--capa-3)" stroke-width="4"/><circle class="arco" id="carga-arco" cx="60" cy="60" r="56" fill="none" stroke="var(--acento)" stroke-width="4" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="351.9"/></svg>
+      <span class="glifo ipa" id="carga-glifo">θ</span>
+    </div>
+    <p class="titulo-grande" id="carga-titulo">Preparando el oído de la app</p>
+    <p class="sub" id="carga-texto">La primera vez se descarga el modelo que escucha tu pronunciación sonido por sonido. Son unos 360 MB y quedan guardados en el teléfono: después funciona sin internet y tu voz no sale del celular.</p>
+    <div>
+      <div class="barrita" style="width:100%;height:6px;border-radius:3px" role="progressbar" aria-label="Descarga del modelo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="carga-barra"><i style="width:0;background:var(--acento);transition:width .3s linear"></i></div>
+      <p class="medidor" id="carga-medidor" style="margin-top:10px">Empezando…</p>
+    </div>
+    <p class="aviso" id="carga-aviso">Mejor con Wi-Fi. Deja la app abierta mientras termina.</p>
+    <div class="acciones">
+      <button class="primario" id="carga-listo" hidden>Empezar</button>
+      <button class="secundario" id="carga-ver">Mientras tanto, escuchar y leer</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Error: micrófono bloqueado -->
+<dialog class="pantalla" id="error" aria-labelledby="error-titulo">
+  <div class="centro">
+    <div class="icono-grande" aria-hidden="true">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 9V6a3 3 0 0 1 6 0v5m-.6 2.4A3 3 0 0 1 9 11"/><path d="M5.5 11a6.5 6.5 0 0 0 10.7 5M18.4 12.5c.06-.5.1-1 .1-1.5M12 17.5V21M4 4l16 16"/></svg>
+    </div>
+    <p class="titulo-grande" id="error-titulo">No tengo acceso al micrófono</p>
+    <p class="sub">Chrome lo bloqueó para esta app. Sin micrófono no puedo escuchar cómo pronuncias. El audio se analiza en el teléfono y no se envía a ningún lado.</p>
+    <ol class="pasos">
+      <li>Mantén presionado el ícono de IPA Coach y toca Información de la app (o el candado junto a la dirección en Chrome).</li>
+      <li>Entra a Permisos y luego a Micrófono.</li>
+      <li>Elige Permitir y vuelve aquí.</li>
+    </ol>
+    <div class="acciones">
+      <button class="primario" id="error-reintentar">Intentar de nuevo</button>
+      <button class="secundario" data-cerrar>Seguir solo escuchando</button>
+    </div>
+  </div>
+</dialog>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

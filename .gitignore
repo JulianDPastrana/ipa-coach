@@ -1,0 +1,5 @@
+node_modules/
+*.onnx
+!modelo/*.part*
+__pycache__/
+herramientas/fonetica/dist/

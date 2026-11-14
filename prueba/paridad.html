@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paridad JS vs Python</title>
+<style>
+  body { background: #0a0a0b; color: #f4f4f5; font: 14px/1.5 system-ui, sans-serif; margin: 16px; }
+  table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+  td, th { border-bottom: 1px solid #26262a; padding: 4px 6px; text-align: left; }
+  .mal { color: #ff7b7b; } .bien { color: #5fd38d; }
+  pre { white-space: pre-wrap; }
+</style>
+<h1>Paridad JS vs Python</h1>
+<p>Mismos WAV de 16 kHz. Referencia: <code>fonemas.evaluar()</code> de IPA-Coach con el ONNX int8 y con PyTorch.</p>
+<pre id="estado">cargando el modelo…</pre>
+<table>
+  <thead><tr><th>audio</th><th>ms</th><th>Δp máx vs ONNX</th><th>veredictos ≠ ONNX</th><th>Δp máx vs PyTorch</th><th>veredictos ≠ PyTorch</th><th>oído = ONNX</th></tr></thead>
+  <tbody id="filas"></tbody>
+</table>
+<pre id="resumen"></pre>
+<script type="module">
+  import { a16k } from "../js/audio.js";
+  import { BIEN, CASI } from "../js/puntaje.js";
+
+  const $ = (s) => document.querySelector(s);
+  const veredicto = (p) => (p >= BIEN ? 2 : p >= CASI ? 1 : 0);
+  const oido = new Worker(new URL("../js/oido.js", import.meta.url), { type: "module" });
+  const pendientes = new Map();
+  let id = 0;
+  const llamar = (datos) => new Promise((ok, mal) => {
+    pendientes.set(++id, { ok, mal });
+    oido.postMessage({ tipo: "evaluar", id, ...datos });
+  });
+  oido.onmessage = ({ data }) => {
+    if (data.tipo === "progreso") $("#estado").textContent = `descargando ${(data.bajados / 1e6).toFixed(0)} de ${(data.total / 1e6).toFixed(0)} MB`;
+    if (data.tipo === "listo") $("#estado").textContent = `modelo listo en ${data.ms} ms · ${data.hilos} hilo(s) · aislado: ${crossOriginIsolated}`;
+    const p = pendientes.get(data.id);
+    if (!p) return;
+    pendientes.delete(data.id);
+    data.tipo === "error" ? p.mal(new Error(data.mensaje)) : p.ok(data);
+  };
+
+  function comparar(js, ref) {
+    let dp = 0, cambios = 0;
+    js.filas.forEach(([, , p], k) => {
+      const q = ref.filas[k][2];
+      dp = Math.max(dp, Math.abs(p - q));
+      if (veredicto(p) !== veredicto(q)) cambios++;
+    });
+    return { dp, cambios };
+  }
+
+  const { casos } = await (await fetch("referencia.json")).json();
+  const total = { fonemas: 0, onnx: 0, pytorch: 0, dpOnnx: 0, oido: 0, ms: [] };
+  const resultados = [];
+  for (const c of casos) {
+    const audio = await a16k(await (await fetch(c.audio)).blob());
+    const r = await llamar({ audio, objetivo: c.objetivo, lang: c.lang });
+    const a = comparar(r, c.onnx), b = comparar(r, c.pytorch);
+    const mismoOido = r.oido.join(" ") === c.onnx.oido.join(" ");
+    total.fonemas += c.objetivo.length;
+    total.onnx += a.cambios;
+    total.pytorch += b.cambios;
+    total.dpOnnx = Math.max(total.dpOnnx, a.dp);
+    total.oido += mismoOido;
+    total.ms.push(r.ms);
+    resultados.push({ audio: c.audio, segundos: +(audio.length / 16000).toFixed(2), ms: r.ms, dpOnnx: +a.dp.toFixed(3), cambiosOnnx: a.cambios,
+                      dpPytorch: +b.dp.toFixed(3), cambiosPytorch: b.cambios, mismoOido, js: r.filas.map((f) => f[2]), onnx: c.onnx.filas.map((f) => f[2]) });
+    $("#filas").insertAdjacentHTML("beforeend", `<tr><td>${c.audio.slice(6)}</td><td>${r.ms}</td>
+      <td class="${a.dp > 0.02 ? "mal" : "bien"}">${a.dp.toFixed(3)}</td><td class="${a.cambios ? "mal" : "bien"}">${a.cambios}</td>
+      <td>${b.dp.toFixed(3)}</td><td>${b.cambios}</td><td class="${mismoOido ? "bien" : "mal"}">${mismoOido ? "sí" : r.oido.join("")}</td></tr>`);
+  }
+  const orden = [...total.ms].sort((x, y) => x - y);
+  const resumen = {
+    casos: casos.length, fonemas: total.fonemas,
+    veredictosDistintosVsOnnx: total.onnx, dpMaxVsOnnx: +total.dpOnnx.toFixed(3),
+    veredictosDistintosVsPytorch: total.pytorch, oidoIgual: `${total.oido}/${casos.length}`,
+    msMediana: orden[orden.length >> 1], msMax: orden.at(-1), hilos: navigator.hardwareConcurrency, aislado: crossOriginIsolated,
+    agente: navigator.userAgent,
+  };
+  $("#resumen").textContent = JSON.stringify(resumen, null, 1);
+  window.resultadoParidad = { resumen, resultados };
+  document.title = "LISTO";
+</script>

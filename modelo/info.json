@@ -1,0 +1,15 @@
+{
+ "modelo": "facebook/wav2vec2-xlsr-53-espeak-cv-ft",
+ "variante": "pesos_s8_canal",
+ "partes": [
+  "modelo.onnx.part0",
+  "modelo.onnx.part1",
+  "modelo.onnx.part2",
+  "modelo.onnx.part3"
+ ],
+ "bytes": 359307241,
+ "sha256": "c6aa251f6f3076e598db6269555a3dee1fc2ac2a9d1e673241e58dc7a9b844d8",
+ "entrada": "audio float32 [1, muestras] a 16 kHz",
+ "salida": "logits float32 [1, frames, 392], blank = 0",
+ "normalizacion": "x = (x - media) / sqrt(varianza + 1e-7) sobre toda la señal, después de añadir 4000 ceros (0,25 s) a cada lado"
+}

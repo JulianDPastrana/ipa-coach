@@ -1,0 +1,6 @@
+modelo/*.part* binary
+*.data binary
+*.wasm binary
+*.woff2 binary
+*.wav binary
+*.png binary

@@ -1,0 +1,12 @@
+{
+  "name": "fonetica",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "comparar": "node recortar.js && node comparar.js"
+  },
+  "dependencies": {
+    "@echogarden/espeak-ng-emscripten": "0.3.5",
+    "phonemizer": "1.2.1"
+  }
+}
